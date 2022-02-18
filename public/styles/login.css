@@ -1,0 +1,25 @@
+.row {
+    height: 100vh;
+}
+
+#coloum-2{
+    background-image: url(/images/loginPageBackground.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+.coloum-2-container {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+h6 {
+    width: 100%; 
+    text-align: center; 
+    border-bottom: 1px solid #fff; 
+    line-height: 0.1em;
+    margin: 10px 0 20px; 
+ } 
+ 
+ h6 span { 
+     padding:0 10px; 
+ }

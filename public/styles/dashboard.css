@@ -1,0 +1,60 @@
+.container-fluid {
+  height: 100vh;
+  background-image: url(/images/loginPageBackground.jpg);
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.form-container {
+  background-color: rgba(0, 0, 0, 0.8);
+  border: 1px solid rgba(238, 184, 84, 0.5);
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 25px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+form div {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+form div input {
+  width: 45%;
+  height: 40px;
+  border-radius: 8px;
+  outline: none;
+  border: 3px solid rgba(238, 184, 84, 0.5);
+  padding: 0 30px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+input:focus {
+  border: 3px solid #1540ff;
+}
+
+label {
+  text-align: center;
+  margin-bottom: 5px;
+  width: 35%;
+  height: 40px;
+  line-height: 200%;
+  border-radius: 8px;
+  outline: none;
+  border: 3px solid rgba(238, 184, 84, 0.5);
+  padding: 0 30px;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.buttons {
+  display: flex;
+  justify-content: space-around;
+}
+
+button {
+   width: 30%;
+ }
