@@ -53,6 +53,10 @@ const bloggerSchema = new mongoose.Schema({
     enum: ["male", "female"],
     default: "male",
   },
+  avatar: {
+    type: String,
+    default: "default_avatar.png"
+  },
   role: {
     type: String,
     enum: ['blogger', 'admin'],

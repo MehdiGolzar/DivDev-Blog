@@ -1,8 +1,33 @@
 const User = require('../models/user');
 
-const panel = async (req, res) => {
-    res.render('panel');
+
+const dashboard = async (req, res) => {
+
+    res.render('adminDashboard', {
+        firstName: req.session.user.firstName,
+        lastName: req.session.user.lastName,
+        avatar: req.session.user.avatar,
+    });
+
+    // res.json({msg: 'Logged in'});
 }
+
+const profile = async (req, res) => {
+
+    res.render('profile', {
+        username: req.session.user.username,
+        firstName: req.session.user.firstName,
+        lastName: req.session.user.lastName,
+        email: req.session.user.email,
+        phoneNumber: req.session.user.phoneNumber,
+        gender: req.session.user.gender,
+        avatar: req.session.user.avatar,
+        msg: null
+    });
+
+    // res.json({msg: 'Logged in'});
+}
+
 
 const getUsers = async (req, res) => {
 
@@ -19,6 +44,7 @@ const getUsers = async (req, res) => {
 }
 
 module.exports = {
-    panel,
+    dashboard,
+    profile,
     getUsers,
 }

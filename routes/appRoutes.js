@@ -4,7 +4,10 @@ const router = express.Router();
 // require Routers
 const authRouter = require('./authentication');
 const adminRouter = require('./admin');
-const bloggerRouter = require('./blogger');
+const userRouter = require('./user');
+
+// require Tools
+const authTools = require('../tools/authentication');
 
 // require Model
 const User = require('../models/user');
@@ -13,14 +16,14 @@ const User = require('../models/user');
 // GET request to render index page
 router.get("/", (req, res) => res.render('index'));
 
-/*---------------------------- Auth ----------------------------*/
+/*---------------------------- Auth Middleware ----------------------------*/
 router.use('/auth', authRouter);
 
-/*---------------------------- Admin ----------------------------*/
+/*---------------------------- Admin Middleware ----------------------------*/
 router.use('/admin', adminRouter);
 
-/*---------------------------- User ----------------------------*/
-router.use('/blogger', bloggerRouter);
+/*---------------------------- User Middleware ----------------------------*/
+router.use('/user', authTools.sessionChecker_login, userRouter);
 
 
 

@@ -1,4 +1,5 @@
 const User = require('../models/user');
+const bcrypt = require('bcrypt');
 const {
     validationResult
 } = require('express-validator');
@@ -91,11 +92,12 @@ const register_post = async (req, res) => {
                 gender: req.body.gender
             });
 
-            // res.json({
-            //     msg: "User successfully saved in database"
-            // });
+            return res.json({
+                success: true,
+                msg: "User created successfully"
+            });
 
-            res.redirect('/auth/login');
+            // res.redirect('/auth/login');
 
         } catch (err) {
             res.status(500).json(err);
@@ -107,69 +109,81 @@ const register_post = async (req, res) => {
 // Controller of GET request to render login page
 const login_get = (req, res) => {
     res.render('login', {
-        css: 'login',
-        title: 'Login'
+        msg: null
     })
 };
 
 // Controller of POST request to login user
 const login_post = async (req, res) => {
     try {
+
+        // Check that the inputs are not empty
         if (!req.body.username || !req.body.password) {
-            return res.status(406).json({
-                msg: 'Not Acceptable'
-            });
+            // return res.status(406).json({
+            //     success: false,
+            //     msg: 'Not Acceptable'
+            // });
+
+            return res.status(406).render('login', {
+                msg: 'Input can not empty'
+            })
         };
 
         const registeredUser = await User.findOne({
             username: req.body.username
         });
 
+        // Check the existence of the user
         if (!registeredUser) {
-            // return res.render('login', {msg: 'Wrong username or password'})
-            return res.json({
+            // return res.json({
+            //     success: false,
+            //     msg: 'User not found'
+            // })
+
+            return res.status(404).render('login', {
                 msg: 'User not found'
             })
         }
 
-        // const match = await bcrypt.compare(password, registeredUser.password);
+        // Compare the password entered with the password stored in the database 
+        bcrypt.compare(req.body.password, registeredUser.password)
+            .then(function (result) {
+                if (!result) {
+                    // return res.status(401).json({
+                    //     success: false,
+                    //     msg: 'Username or Password is incorrect'
+                    // })
 
-        if (req.body.password === '12345678') {
-            req.session.user = registeredUser;
+                    return res.status(401).render('login', {
+                        msg: 'Username or Password is incorrect'
+                    })
+                }
 
-            // res.json({
-            //     msg: "Dashboard"
-            // });
+                // Set Session
+                req.session.user = registeredUser;
 
-            res.redirect('/auth/dashboard');
-        }
+                // If the role of the logged in user is admin
+                if (registeredUser.role === 'admin') {
+                    return res.redirect('/admin/dashboard');
+                }
+
+                // If the role of the logged in user is blogger
+                res.redirect('/user/dashboard');
+
+
+            })
+
     } catch (err) {
-        res.json(err)
+        res.json({
+            err: err
+        })
     }
-
 
 };
 
-/*---------------------------- Dashboard Controller ----------------------------*/
-// Controller of GET request to  render dashaboard page
-const dashboard = (req, res) => {
-    if (!req.session.user || !req.cookies.user_sid) {
-        return res.redirect('/auth/login');
-    };
-    // console.log(req.session.user);
-    res.render('dashboard', {
-        username: req.session.user.username,
-        firstName: req.session.user.firstName,
-        lastName: req.session.user.lastName,
-        email: req.session.user.email,
-        phoneNumber: req.session.user.phoneNumber,
-        gender: req.session.user.gender,
-        msg: null
-    });
-}
-
 /*---------------------------- Logout Controller ----------------------------*/
 const logout = (req, res) => {
+    res.clearCookie('user_sid')
     req.session.destroy();
     res.redirect('/');
 }
@@ -180,6 +194,5 @@ module.exports = {
     register_post,
     login_get,
     login_post,
-    dashboard,
     logout
 }

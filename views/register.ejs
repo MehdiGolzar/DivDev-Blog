@@ -15,15 +15,17 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
         crossorigin="anonymous" />
     <!-- my css -->
-    <link rel="stylesheet" href="/styles/register.css">
+    <link rel="stylesheet" href="/css/register.css">
 </head>
 
 <body>
     <div class="container-fluid d-flex justify-content-center align-items-center">
 
         <div class="form-container p-4 col-12 col-sm-8 col-lg-6">
-            
-            <form id="form" action="/auth/register" method="POST">
+
+            <!-- <form id="form" action="/auth/register" method="POST"> -->
+            <form id="form">
+
                 <!-- form title -->
                 <div class="mb-4 text-light text-center title">SignUp</div>
 
@@ -76,9 +78,9 @@
                     <option value="female">Female</option>
                 </select>
 
-                <div id="msg" class="text-center text-light"> <%= msg %></div>
+                <div id="msg" class="text-center text-danger"> <%= msg %></div>
 
-                <button type="submit" id="submit" class="btn btn-primary mb-2 w-100">Submit</button>
+                <button type="submit" id="submitBtn" class="btn btn-primary mb-2 w-100">Submit</button>
                 <!-- login page link -->
                 <div class="text-center"><a href="/auth/login" class="text-decoration-none text-light">Already
                         Have an Account?</a></div>
@@ -88,7 +90,7 @@
 
     </div>
 
-    <!-- <script src="/javascripts/validation.js"></script> -->
+    <script src="/javascripts/register.js"></script>
 </body>
 
 </html>

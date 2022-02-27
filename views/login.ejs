@@ -15,7 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
         crossorigin="anonymous" />
     <!-- my css -->
-    <link rel="stylesheet" href="/styles/login.css">
+    <link rel="stylesheet" href="/css/login.css">
 </head>
 
 <body>
@@ -25,6 +25,7 @@
             <!-- coloum-1 form part -->
             <div class="d-flex flex-column justify-content-center col-12 col-md-5 bg-dark " id="coloum-1">
                 <div class="mb-4 text-light text-center h3"><span>Login</span></div>
+                <div id="msg" class="text-center text-danger mb-4"> <%= msg %></div>
                 <div class="form-container p-4">
                     <form action="/auth/login" method="post">
                         <div class="mb-3">
@@ -41,6 +42,7 @@
                             <button type="submit" class="btn btn-primary w-100">Login</button>
                         </div>
                     </form>
+
                     <div class="mb-3 text-center"><a class="text-decoration-none text-light" href="#">Forgot
                             Password</a></div>
                     <div class="text-center"><a class="text-decoration-none text-light" href="#">Sign in with
