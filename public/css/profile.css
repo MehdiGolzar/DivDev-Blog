@@ -59,7 +59,13 @@ button {
    width: 30%;
  }
 
+ #avatar-container {
+  display: flex;
+  justify-content: center;
+  /* margin-bottom: 15px; */
+}
+
  #avatar-container > img {
-   width: 80px;
+   width: 90px;
    border-radius: 50%;
  }

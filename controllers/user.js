@@ -1,11 +1,15 @@
 // require Model
 const User = require('../models/user');
 
+// require Tools
+const generalTools = require('../tools/general');
+
+
 /*---------------------------- Dashboard Controller ----------------------------*/
 // Controller of GET request to  render dashaboard page
 const dashboard = (req, res) => {
 
-    res.render('userDashboard', {
+    res.render('profile', {
         username: req.session.user.username,
         firstName: req.session.user.firstName,
         lastName: req.session.user.lastName,
@@ -17,38 +21,27 @@ const dashboard = (req, res) => {
     });
 }
 
+/*---------------------------- Update Profile Controller ----------------------------*/
 const update = async (req, res) => {
     const updatedFields = {}
 
-    console.log('req.body', req.body);
+    // console.log('req.body', req.body);
 
     try {
 
-        if (req.body.firstName !== '' && req.body.firstName !== req.session.user.firstName) {
+        if (req.body.firstName !== ' ' && req.body.firstName !== req.session.user.firstName) {
             updatedFields.firstName = req.body.firstName;
-        }
-
-        if (req.body.lastName !== '' && req.body.lastName !== req.session.user.lastName) {
+        } else if (req.body.lastName !== ' ' && req.body.lastName !== req.session.user.lastName) {
             updatedFields.lastName = req.body.lastName;
-        }
-
-        if (req.body.email !== '' && req.body.email !== req.session.user.email) {
+        } else if (req.body.email !== ' ' && req.body.email !== req.session.user.email) {
             updatedFields.email = req.body.email;
-        }
-
-        if (req.body.phoneNumber !== '' && req.body.phoneNumber !== req.session.user.phoneNumber) {
+        } else if (req.body.phoneNumber !== ' ' && req.body.phoneNumber !== req.session.user.phoneNumber) {
             updatedFields.phoneNumber = req.body.phoneNumber;
+        } else if (req.body.gender !== ' ' && req.body.gender !== req.session.user.gender) {
+            updatedFields.gender = req.body.gender;
         }
         console.log('Updated Fields', updatedFields);
 
-        // const filter = await User.find({
-        //     username: req.session.user.username
-        // });
-
-        // if (!targetUser) {
-        //     return res.staus(500).send('Internal server error')
-        // }
-        // console.log(targetUser);
         const updateResult = await User.updateOne({
                 username: req.session.user.username
             },
@@ -56,16 +49,50 @@ const update = async (req, res) => {
         );
 
         console.log('Update Result', updateResult);
-        res.json({
-            success: true,
-            msg: 'User updated successfully'
+
+        if (updateResult.acknowledged === true && updateResult.matchedCount === 1 && updateResult.modifiedCount >= 1) {
+            return res.json({
+                success: true,
+                msg: 'Your profile has been successfully updated'
+            });
+        }
+
+        return res.status(400).json({
+            success: false,
+            msg: 'Update failed'
         });
+
+
     } catch (err) {
         console.log('Error', err);
     }
 
 };
 
+/*---------------------------- Upload Avatar Controller ----------------------------*/
+const uploadAvatar = (req, res) => {
+    User.findByIdAndUpdate(req.session.user._id, {
+        avatar: req.file.filename
+    }, (err, user) => {
+        if (err) {
+            console.log(err);
+            return res.status(500).json({
+                success: false,
+                msg: 'Avatar could not be uploaded'
+            });
+        }
+
+        req.session.user.avatar = req.file.filename;
+
+        return res.json({
+            success: true,
+            msg: 'Avatar uploaded'
+        });
+        // res.redirect('/user/userDashboard');
+    });
+}
+
+/*---------------------------- Delete User Controller ----------------------------*/
 const Delete = async (req, res) => {
     // const targetUser = req.session.user.username;
 
@@ -76,7 +103,12 @@ const Delete = async (req, res) => {
             return res.status(500).send('Internal server error')
         }
         res.clearCookie('user_sid')
-        res.redirect('/auth/register');
+        // req.session.destroy();
+        return res.json({
+            success: true,
+            msg: 'Your account has been successfully deleted'
+        })
+        // res.redirect('/auth/register');
 
     } catch (err) {
         console.log(err);
@@ -85,5 +117,6 @@ const Delete = async (req, res) => {
 module.exports = {
     dashboard,
     update,
+    uploadAvatar,
     Delete,
 }

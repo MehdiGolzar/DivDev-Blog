@@ -30,7 +30,7 @@ $(document).ready(function () {
         msg: 'Password not matched'
     }, {
         id: 'gender',
-        regex: /[male|female]/,
+        regex: /(male|female)/,
         msg: 'Select your gender male or female'
     }];
 

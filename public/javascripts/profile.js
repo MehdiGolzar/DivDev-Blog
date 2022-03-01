@@ -3,6 +3,50 @@ $(document).ready(function () {
     let editBtn = $('#editBtn');
     let logoutBtn = $('#logoutBtn')
 
+
+    logoutBtn.click(function (e) {
+        e.preventDefault();
+
+        if (logoutBtn.text() === 'Delete') {
+            $.ajax({
+                type: "get",
+                url: "http://localhost:5005/user/delete",
+                success: function (response) {
+                    if (response.success === true) {
+                        $('#alert').css('color', '#ff142a');
+                        $('#alert').text(response.msg);
+                        $('#alert').fadeIn();
+                        setTimeout(() => {
+                            return location.href = 'http://localhost:5005/'
+                        }, 3000)
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        } else {
+            $.ajax({
+                type: "get",
+                url: "http://localhost:5005/auth/logout",
+                success: function (response) {
+                    if (response.success === true) {
+                        $('#alert').css('color', '#57b0ff');
+                        $('#alert').text(response.msg);
+                        $('#alert').fadeIn();
+                        setTimeout(() => {
+                            return location.href = 'http://localhost:5005/'
+                        }, 3000)
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+        }
+    });
+
+
     editBtn.click(function (e) {
         e.preventDefault();
 
@@ -14,26 +58,27 @@ $(document).ready(function () {
             logoutBtn.removeClass('btn-warning');
             logoutBtn.addClass('btn-danger');
             logoutBtn.text('Delete');
-            logoutBtn.attr('href', '/user/delete');
 
             $('input[name != username]').removeAttr('disabled');
+            $('#gender').removeAttr('disabled');
             $('input[name != username]').removeClass('text-light');
 
-            $('input[type = file]').removeAttr('disabled');
 
 
         } else {
-
 
             const thisUser = {};
             thisUser.firstName = $('#firstName').val();
             thisUser.lastName = $('#lastName').val();
             thisUser.email = $('#email').val();
             thisUser.phoneNumber = $('#phoneNumber').val();
+            thisUser.gender = $('#gender').val();
+
             console.log(thisUser);
+
             $.ajax({
                 type: "PUT",
-                url: "http://localhost:5005/user/update",
+                url: "/user/update",
                 contentType: "application/json",
                 dataType: "json",
                 data: JSON.stringify(thisUser),
@@ -47,18 +92,26 @@ $(document).ready(function () {
                         logoutBtn.removeClass('btn-danger');
                         logoutBtn.addClass('btn-secondary');
                         logoutBtn.text('Logout');
-                        logoutBtn.attr('href', '/auth/logout');
 
                         $('input[name != username]').attr("disabled", "disabled");
                         $('input[name != username]').addClass('text-light');
-                        $('#alert').text(response.msg);
-                        $('#alert').fadeOut(3000);
 
+                        $('#alert').css('color', '#00ff87');
+                        $('#alert').text(response.msg);
+                        $('#alert').fadeIn();
+                        $('#alert').fadeOut(4000);
 
                     }
                 },
                 error: function (err) {
                     console.log(err);
+                    if (err.success === false) {
+                        $('#alert').css('color', '#00ff87');
+                        $('#alert').text(response.msg);
+                        $('#alert').fadeIn();
+                        $('#alert').fadeOut(4000);
+                        $('#alert').text('');
+                    }
                 }
             });
 
@@ -66,7 +119,39 @@ $(document).ready(function () {
 
     });
 
-    $('#avatar').click(function(){ $('#imgInput').trigger('click'); });
- 
+    $('#avatarImg').click(function () {
+        $('Input[type = file]').trigger('click');
+    });
 
+    $('#avatarInput').on('change', function () {
+
+        let formData = new FormData();
+        let avatarFile = $('#avatarInput')[0].files[0];
+        formData.append('avatar', avatarFile);
+        console.log(avatarFile);
+        $.ajax({
+            url: '/user/uploadAvatar',
+            type: 'post',
+            data: formData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
+                if (response.success === true) {
+                    $('#alert').css('color', '#00ff87');
+                    $('#alert').text(response.msg);
+                    $('#alert').fadeIn();
+                    setTimeout(() => {
+                        location.href = 'http://localhost:5005/user/dashboard';
+                    }, 2000);
+                }
+            },
+            error: function (err) {
+                console.log('err', err);
+                $('#alert').css('color', '#ff142a');
+                $('#alert').text('Avatar could not be uploaded');
+                $('#alert').fadeIn();
+                $('#alert').fadeOut(4000);
+            },
+        });
+    });
 });

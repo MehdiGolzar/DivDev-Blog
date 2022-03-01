@@ -20,20 +20,19 @@
 
 <body>
     <div class="container-fluid d-flex justify-content-center align-items-center">
+        <!-- Form container -->
         <div class="form-container p-4 col-12 col-sm-8 col-lg-6">
 
-            <form id="form" action="/user/update" method="put">
+            <!-- Avatar -->
+            <div class="mb-3 field" id="avatar-container">
+                <img id="avatarImg" src="/images/avatars/<%= avatar %>">
+                <input type="file" name="avatar" class="d-none" id="avatarInput" disabled />
+            </div>
 
-                <!-- form title -->
-                <div class="mb-2 text-light text-center title">Dashboard</div>
+            <!-- form alert -->
+            <div id="alert" class="mb-3 mt-3 text-center h6"></div>
 
-                <!-- form alert -->
-                <div id="alert" class="mb-2 text-light text-center"><%= msg %></div>
-
-                <div class="mb-3 field" id="avatar-container">
-                    <img id="avatar" src="/images/avatars/<%= avatar %>">
-                    <input type="file" class="d-none" id="imgInput" disabled/> 
-                </div>
+            <form id="form">
 
                 <!-- Username Input -->
                 <div class="mb-3 field">
@@ -80,9 +79,9 @@
                     </select>
                 </div>
 
-                <!-- Form Buttons -->
+                <!-- Buttons -->
                 <div class="buttons">
-                    <a id="logoutBtn" class="btn btn-secondary mb-2 p-2" href="/auth/logout">Logout</a>
+                    <button id="logoutBtn" class="btn btn-secondary mb-2">Logout</button>
                     <button type="submit" id="editBtn" class="btn btn-warning mb-2">Edit</button>
                 </div>
 
@@ -97,12 +96,12 @@
 
             <!-- Upload Avatar buttons -->
             <!-- <form id="avatarForm" action="/user/uploadAvatar" enctype="multipart/form-data" method="post"> -->
-    
+
             <!-- <div class="mb-3 field">
                 <a class="text-light me-3 btn btn-outline-info" for="avatar" id="avatarBtn">Upload Avatar</a>
                 <input class="text-light form-control-file" type="file" name="avatar" id="avatar"/>
             </div> -->
-        <!-- </form> -->
+            <!-- </form> -->
 
         </div>
     </div>
@@ -110,4 +109,3 @@
 </body>
 
 </html>
-

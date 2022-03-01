@@ -20,7 +20,7 @@ router.get("/", (req, res) => res.render('index'));
 router.use('/auth', authRouter);
 
 /*---------------------------- Admin Middleware ----------------------------*/
-router.use('/admin', adminRouter);
+router.use('/admin', authTools.sessionChecker_login, adminRouter);
 
 /*---------------------------- User Middleware ----------------------------*/
 router.use('/user', authTools.sessionChecker_login, userRouter);
