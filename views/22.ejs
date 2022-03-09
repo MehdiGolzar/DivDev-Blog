@@ -1,0 +1,21 @@
+<% for( let i = 0; i < articles.length; i++ ) { %>
+
+    <div class="post col-xl-6">
+      <div class="post-thumbnail"><a href="#"><img src="img/blog-post-1.jpeg" alt="..." class="img-fluid"></a></div>
+      <div class="post-details">
+        <div class="post-meta d-flex justify-content-between">
+          <div class="date meta-last">20 May | 2016</div>
+          <div class="category"><a href="#">category</a></div>
+        </div><a href="post.html">
+          <h3 class="h4"><%= articles[i].title %> </h3></a>
+        <p class="text-muted" id="summary"><%= articles[i].text %> </p>
+        <footer class="post-footer d-flex align-items-center"><a href="#" class="author d-flex align-items-center flex-wrap">
+            <div class="avatar"><img src="/images/avatars/<%=  articles[i].author.avatar  %> " alt="..." class="img-fluid"></div>
+            <div class="title"><span><%= articles[i].author.firstName %> <%= articles[i].author.lastName %>  </span></div></a>
+          <div class="date"><i class="icon-clock"></i> 2 Mounths Ago</div>
+          <div class="comments meta-last"><i class="icon-comment"></i>12</div>
+        </footer>
+      </div>
+    </div>
+
+    <% } %>

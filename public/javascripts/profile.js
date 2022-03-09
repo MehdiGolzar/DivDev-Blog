@@ -9,7 +9,7 @@ $(document).ready(function () {
 
         if (logoutBtn.text() === 'Delete') {
             $.ajax({
-                type: "get",
+                type: "DELETE",
                 url: "http://localhost:5005/user/delete",
                 success: function (response) {
                     if (response.success === true) {

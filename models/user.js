@@ -1,8 +1,12 @@
 const mongoose = require("mongoose");
+const {
+  Schema
+} = mongoose;
+
 const validator = require("validator");
 const bcrypt = require('bcrypt');
 
-const bloggerSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
   firstName: {
     type: String,
     required: true,
@@ -61,11 +65,15 @@ const bloggerSchema = new mongoose.Schema({
     type: String,
     enum: ['blogger', 'admin'],
     default: 'blogger'
-  }
+  },
+  articles: [{
+    type: Schema.Types.ObjectId,
+    ref: 'Article'
+  }]
 });
 
 // Hash Password
-bloggerSchema.pre('save', function (next) {
+UserSchema.pre('save', function (next) {
   let user = this._doc;
   if (this.isNew || this.isModified('password')) {
     bcrypt.hash(user.password, 10, function (err, hash) {
@@ -79,9 +87,9 @@ bloggerSchema.pre('save', function (next) {
 
 });
 
-bloggerSchema.post('save', function (doc, next) {
+UserSchema.post('save', function (doc, next) {
   next()
 });
 
 
-module.exports = mongoose.model("User", bloggerSchema);
+module.exports = mongoose.model("User", UserSchema);

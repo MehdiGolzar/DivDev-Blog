@@ -1,3 +1,3 @@
 {
-    "livePreview.defaultPreviewPath": "/views/editProfile.ejs"
+    "livePreview.defaultPreviewPath": "/views/articles.ejs"
 }

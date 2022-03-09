@@ -1,13 +1,26 @@
 // require Model
 const User = require('../models/user');
 
-// require Tools
-const generalTools = require('../tools/general');
 
+/*-------------------------------------------------------------------------------*/
+/* Dashboard Controllers */
+/*-------------------------------------------------------------------------------*/
+const dashboard = async (req, res) => {
 
-/*---------------------------- Dashboard Controller ----------------------------*/
-// Controller of GET request to  render dashaboard page
-const dashboard = (req, res) => {
+    res.render('userDashboard', {
+        firstName: req.session.user.firstName,
+        lastName: req.session.user.lastName,
+        avatar: req.session.user.avatar,
+    });
+
+    // res.json({msg: 'Logged in'});
+}
+
+/*-------------------------------------------------------------------------------*/
+/* Profile Controllers */
+/*------------------------- ------------------------------------------------------*/
+// Controller of GET request to render dashaboard page
+const profile = (req, res) => {
 
     res.render('profile', {
         username: req.session.user.username,
@@ -24,8 +37,6 @@ const dashboard = (req, res) => {
 /*---------------------------- Update Profile Controller ----------------------------*/
 const update = async (req, res) => {
     const updatedFields = {}
-
-    // console.log('req.body', req.body);
 
     try {
 
@@ -114,8 +125,11 @@ const Delete = async (req, res) => {
         console.log(err);
     }
 }
+
+
 module.exports = {
     dashboard,
+    profile,
     update,
     uploadAvatar,
     Delete,

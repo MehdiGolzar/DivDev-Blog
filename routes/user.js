@@ -17,6 +17,9 @@ const generalTools = require('../tools/general');
 router.get("/dashboard", userControllers.dashboard);
 
 /*---------------------------- Profile ----------------------------*/
+// Get request to Render Profile
+router.get("/profile", userControllers.profile);
+
 // Put request to Update Profile
 router.put('/update', userControllers.update);
 
@@ -24,7 +27,7 @@ router.put('/update', userControllers.update);
 router.post('/uploadAvatar', generalTools.uploadAvatar.single('avatar'), userControllers.uploadAvatar);
 
 // Delete request to Delete User
-router.get('/delete', userControllers.Delete);
+router.delete('/delete', userControllers.Delete);
 
 
 module.exports = router;

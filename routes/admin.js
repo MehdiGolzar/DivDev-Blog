@@ -1,20 +1,37 @@
+// Express
 const express = require("express");
 const router = express.Router();
 
-const authTools = require('../tools/authentication');
-const authControllers = require('../controllers/authentication');
-const adminController = require('../controllers/admin');
+// require Model
+const User = require('../models/user');
 
-// Get request to render Admin Dashboard
-router.get('/dashboard', authTools.sessionChecker_login, adminController.dashboard);
+// require Controllers
+const adminControllers = require('../controllers/admin');
 
-// Get request to render Admin Profile
-router.get('/profile', authTools.sessionChecker_login, adminController.profile);
+// require Tools
+const generalTools = require('../tools/general');
 
-// // Get request to Logout Admin
-// router.get('/logout', authControllers.logout)
 
-router.get('/getUsers', adminController.getUsers);
+/*---------------------------- Dashboard ----------------------------*/
+// Get request to Render Dashboard
+router.get("/dashboard", adminControllers.dashboard);
+
+/*---------------------------- Profile ----------------------------*/
+// Get request to Render Profile
+router.get("/profile", adminControllers.profile);
+
+// Put request to Update Profile
+router.put('/update', adminControllers.update);
+
+// Post request to Upload Avatar
+router.post('/uploadAvatar', generalTools.uploadAvatar.single('avatar'), adminControllers.uploadAvatar);
+
+// Delete request to Delete User
+router.delete('/delete', adminControllers.Delete);
+
+
+
+router.get('/getUsers', adminControllers.getUsers);
 
 
 
