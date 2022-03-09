@@ -1,7 +1,9 @@
 const mongoose = require('mongoose');
-const { Schema } = mongoose;
+const {
+    Schema
+} = mongoose;
 
-const ArticleSchema = new mongoose.Schema({ 
+const ArticleSchema = new mongoose.Schema({
     title: {
         type: String,
         required: true,
@@ -19,10 +21,14 @@ const ArticleSchema = new mongoose.Schema({
     },
     image: {
         type: String,
+        default: "Article_default_Image.png"
     },
     createdAt: {
         type: Date,
         default: new Date
+    },
+    src: {
+        type: String
     }
 });
 

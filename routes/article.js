@@ -18,9 +18,7 @@ router.get('/myArticles', articleControllers.myArticles);
 // router.put('/:id', articleControllers.updateArticle);
 
 // GET request to Get All Article
-router.get('/', articleControllers.allArticle);
-
-
+router.get('/allArticles', articleControllers.allArticles);
 
 
 
