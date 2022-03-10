@@ -1,0 +1,46 @@
+<div class="row">
+    <!-- post -->
+    <% for( let i = 0; i < articles.length; i++ ) { %>
+
+    <div class="post col-xl-5 bg-dark ms-4 me-4 mb-4">
+        <div class="post-thumbnail mt-3"><a href="#"><img src="/articles/<%= articles[i].image %> " alt="..."
+                    class="img-fluid"></a>
+        </div>
+        <div class="post-details">
+            <div class="post-meta d-flex justify-content-between">
+                <div class="date meta-last">20 May | 2016</div>
+                <div class="category"><a href="#">category</a></div>
+            </div>
+            <a href="#"">
+            <h3 class=" text-light"><%= articles[i].title %></h3>
+            </a>
+            <p class="text-light summary"><%= articles[i].summary %>... </p>
+            <footer class="post-footer d-flex flex-grow align-items-center mb-3">
+                <a href="#" class="author d-flex align-items-center">
+                    <div class="avatar"><img src="/images/avatars/<%=  articles[i].author.avatar  %> " alt="..."
+                            class="img-fluid"></div>
+                </a>
+                <div class="title"><span><%= articles[i].author.firstName %>
+                        <%= articles[i].author.lastName %></span></div>
+                <div class="date"><i class="icon-clock"></i><%= articles[i].createdAt %> </div>
+                <div class="comments meta-last"><i class="icon-comment"></i>12</div>
+            </footer>
+        </div>
+        <div class="mb-3 p-1 text-center">
+            <button class="btn btn-primary w-50 px-5 py-2 more-btn" id="" articleId="<%= articles[i].id %>">More</button>
+        </div>
+    </div>
+
+    <% } %>
+
+    <!-- Pagination -->
+    <nav aria-label="Page navigation example">
+        <ul class="pagination pagination-template d-flex justify-content-center">
+            <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-left"></i></a></li>
+            <li class="page-item"><a href="#" class="page-link active">1</a></li>
+            <li class="page-item"><a href="#" class="page-link">2</a></li>
+            <li class="page-item"><a href="#" class="page-link">3</a></li>
+            <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
+        </ul>
+    </nav>
+</div>

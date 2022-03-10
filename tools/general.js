@@ -27,6 +27,21 @@ const uploadAvatar = multer({
     }
 })
 
+
+
+// function for get id of article
+let getDocId = function (doc) {
+    return new Promise((resolve, reject) => {
+        doc.save(function (err, doc) {
+            if (err) {
+                return reject(err);
+            }
+            return resolve(doc.id);
+        })
+    });
+}
+
 module.exports = {
     uploadAvatar,
+    getDocId,
 }

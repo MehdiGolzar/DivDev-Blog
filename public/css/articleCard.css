@@ -1,0 +1,178 @@
+.post {
+    font-family: "Open Sans", sans-serif;
+    font-size: 1rem;
+    font-weight: normal;
+    line-height: 1.5;
+    color: #212529;
+    background-color: #fff;
+
+}
+
+.post a {
+    color: #999;
+    text-decoration: none;
+  }
+
+.post a,
+i,
+span {
+    display: inline-block;
+    text-decoration: none;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+}
+
+main.posts-listing {
+    padding-top: 50px;
+    padding-left: 0;
+    padding-right: 0;
+}
+
+main.posts-listing .post {
+    margin-bottom: 50px;
+}
+
+main.posts-listing .post-footer {
+    font-size: 0.8em;
+}
+
+
+
+.post-meta {
+    margin: 10px 0;
+    font-size: 0.8em;
+}
+
+.post-meta .date {
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.post-meta .date::after {
+    display: none;
+}
+
+.post p:not(.lead) {
+    font-weight: 400;
+    color: #777;
+    font-size: 0.95em;
+}
+
+.post a {
+    text-decoration: none;
+}
+
+.post a:hover,
+.post a:focus {
+    text-decoration: none;
+}
+
+.post h3 {
+    line-height: 1.1em;
+    color: #222;
+    -webkit-transition: all 0.3s;
+    transition: all 0.3s;
+    margin-bottom: 1rem;
+}
+
+.post h3:hover {
+    color: #555;
+}
+
+.post .category a {
+    color: #999;
+    letter-spacing: 0.05em;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-decoration: none;
+}
+
+.post .date {
+    letter-spacing: 0.05em;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #aaa;
+}
+
+.post .avatar {
+    max-width: 40px;
+    min-width: 40px;
+    height: 40px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.post .title,
+.post .date,
+.post .comments,
+.post .views {
+    font-weight: 400;
+    color: #999;
+    text-transform: capitalize;
+}
+
+.post .title i,
+.post .date i,
+.post .comments i,
+.post .views i {
+    margin-right: 5px;
+    font-size: 1.1em;
+}
+
+.post .title::after,
+.post .date::after,
+.post .comments::after,
+.post .views::after {
+    content: '|';
+    display: inline-block;
+    margin: 0 7px;
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.post .post-tags {
+    margin-top: 30px;
+}
+
+.post .post-tags .tag {
+    padding: 5px 25px;
+    border: 1px solid #ddd;
+    margin: 5px;
+    color: #777;
+    font-size: 0.75em;
+    text-transform: uppercase;
+    font-weight: 600;
+    text-decoration: none;
+    border-radius: 50px;
+}
+
+.post .post-tags .tag:hover {
+    background: #999;
+    color: #fff;
+    border-color: #999;
+}
+
+.post .meta-last::after {
+    display: none;
+}
+
+/* Latest Posts Section Media Query ------------------------------------- */
+@media (max-width: 767px) {
+    .post {
+        margin-bottom: 40px;
+    }
+
+    .post:last-of-type {
+        margin-bottom: 0;
+    }
+
+}
+
+.post button {
+    border: none;
+    background-color: rgb(98, 218, 1);
+    font-size:1.2rem;
+    font-weight: 550;
+    text-shadow: 1px 0 5px rgb(0, 0, 0);
+}

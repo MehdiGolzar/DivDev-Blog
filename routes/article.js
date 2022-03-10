@@ -21,5 +21,9 @@ router.get('/myArticles', articleControllers.myArticles);
 // GET request to Get All Article
 router.get('/allArticles', articleControllers.allArticles);
 
+// GET request to Get Specific Article
+router.get('/articles/:articleId', articleControllers.specificArticle);
+
+
 
 module.exports = router;

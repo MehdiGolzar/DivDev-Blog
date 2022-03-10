@@ -1,0 +1,20 @@
+    <div class="card">
+        <img src="/articles/<%=  article.image  %>" class="card-img-top" alt="...">
+        <div class="card-body">
+            <h5 class="card-title"><%= articles.title %> </h5>
+            <iframe sr class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                additional
+                content. This content is a little bit longer.</iframe>
+            <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+            <footer class="post-footer d-flex flex-grow align-items-center mb-3">
+                <a href="#" class="author d-flex align-items-center">
+                    <div class="avatar"><img src="/images/avatars/<%=  article.author.avatar  %>" alt="..."
+                            class="img-fluid"></div>
+                </a>
+                <div class="title"><span><%= article.author.firstName %>
+                        <%= article.author.lastName %></span></div>
+                <div class="date"><i class="icon-clock"></i><%= article.createdAt %> </div>
+                <div class="comments meta-last"><i class="icon-comment"></i>12</div>
+            </footer>
+        </div>
+    </div>
