@@ -2,7 +2,8 @@
 const {
     writeFile,
     mkdir,
-    access
+    access,
+    readFile
 } = require('fs/promises');
 const {
     join
@@ -23,7 +24,8 @@ const createArticle = async function (req, res) {
     try {
         const newArticle = {
             title: req.body.articleTitle,
-            content: req.body.articleContent.replace(/(<([^>]+)>)/gi, ""),
+            // content: req.body.articleContent.replace(/(<([^>]+)>)/gi, ""),
+            content: req.body.articleContent,
             summary: req.body.articleContent.slice(0, 150).replace(/(<([^>]+)>)/gi, "")
         }
 
@@ -39,12 +41,12 @@ const createArticle = async function (req, res) {
 
         // Store id of saved Article for name of article
         const articleId = await generalTools.getDocId(savedAricle);
-        const articlePath = join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.txt';
+        const articlePath = join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.html';
 
         await writeFile(articlePath, newArticle.content);
 
-        await Article.findByIdAndUpdate(id, {
-            src: `/articles/${req.session.user._id}/${id}.txt`
+        await Article.findByIdAndUpdate(articleId, {
+            src: `/articles/${req.session.user._id}/${articleId}.html`
         });
 
         if (req.session.user.role === 'blogger') {
@@ -122,7 +124,7 @@ const myArticles = async function (req, res) {
         // })
 
         return res.render('articles', {
-            title: "My Articles",
+            pageTitle: "My Articles",
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
@@ -183,7 +185,7 @@ const allArticles = async function (req, res) {
         // })
 
         return res.render('articles', {
-            title: "All Articles",
+            pageTitle: "All Articles",
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
@@ -216,7 +218,6 @@ const specificArticle = async function (req, res) {
             avatar: 1
         });
 
-
         if (!targetArticle) {
             return res.status(404).json({
                 success: false,
@@ -224,26 +225,23 @@ const specificArticle = async function (req, res) {
             });
         }
 
-        
-        console.log(targetArticle);
-
+        const articleContent = await readFile(join(__dirname, '../public', targetArticle.src), 'utf-8')
         const createdAt = targetArticle.createdAt.toString().slice(0, 16);
 
         const sendToUser = {
-            id: targetArticle.id,
             title: targetArticle.title,
-            src: targetArticle.src,
+            // src: targetArticle.src,
+            content: articleContent,
             summary: targetArticle.summary,
             image: targetArticle.image,
             createdAt: createdAt,
             author: {
+                authorId: targetArticle.author._id,
                 firstName: targetArticle.author.firstName,
                 lastName: targetArticle.author.lastName,
                 avatar: targetArticle.author.avatar
             }
         };
-
-
 
         // return res.json({
         //     success: true,
@@ -252,7 +250,7 @@ const specificArticle = async function (req, res) {
         // })
 
         return res.render('article', {
-            title: sendToUser.title,
+            pageTitle: sendToUser.title,
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,

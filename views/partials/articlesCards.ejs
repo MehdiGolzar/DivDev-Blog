@@ -1,5 +1,9 @@
 <div class="row">
-    <!-- post -->
+    <!-- Articles -->
+    <% if (!articles) { %>
+    <div class="text-danger h2 text-center">There are no articles</div>
+    <% } else { %>
+        
     <% for( let i = 0; i < articles.length; i++ ) { %>
 
     <div class="post col-xl-5 bg-dark ms-4 me-4 mb-4">
@@ -12,7 +16,7 @@
                 <div class="category"><a href="#">category</a></div>
             </div>
             <a href="#"">
-            <h3 class=" text-light"><%= articles[i].title %></h3>
+                    <h3 class=" text-light"><%= articles[i].title %></h3>
             </a>
             <p class="text-light summary"><%= articles[i].summary %>... </p>
             <footer class="post-footer d-flex flex-grow align-items-center mb-3">
@@ -27,7 +31,8 @@
             </footer>
         </div>
         <div class="mb-3 p-1 text-center">
-            <button class="btn btn-primary w-50 px-5 py-2 more-btn" id="" articleId="<%= articles[i].id %>">More</button>
+            <button class="btn btn-primary w-50 px-5 py-2 more-btn" id=""
+                articleId="<%= articles[i].id %>">More</button>
         </div>
     </div>
 
@@ -43,4 +48,8 @@
             <li class="page-item"><a href="#" class="page-link"> <i class="fa fa-angle-right"></i></a></li>
         </ul>
     </nav>
+
+    <% } %>
+
+
 </div>

@@ -5,7 +5,7 @@
   <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title><%= title %> </title>
+  <title><%= pageTitle %> </title>
 
   <!-- Bootstrap -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
@@ -46,8 +46,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
     crossorigin="anonymous" />
   <!-- My CSSs-->
-  <link rel="stylesheet" href="/css/articleCard.css">
-  <link rel="stylesheet" href="/css/articles.css">
+  <link rel="stylesheet" href="/css/article.css">
 
 </head>
 
@@ -83,8 +82,8 @@
       <!-- navbar_dashboard -->
       <%- include('./partials/navbar_dashboard.ejs') %>
       <!-- partial -->
-      <div class="content-wrapper">
-        <main class="posts-listing">
+      <div class="content-wrapper mt-4">
+        <main class="mt-5">
           <div class="container">
             <!-- Article Cards -->
             <%- include('./partials/articleCard.ejs') %> 

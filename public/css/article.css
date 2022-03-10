@@ -1,0 +1,58 @@
+#articleImage {
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 5px;
+    width: 80%;
+}
+
+.avatar {
+    max-width: 70px;
+    min-width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border-radius: 50%;
+    margin-right: 15px;
+}
+
+.date {
+    text-transform: uppercase;
+    font-weight: 400;
+}
+
+.date::after {
+    display: none;
+}
+
+.date {
+    letter-spacing: 0.05em;
+    font-weight: 400;
+    text-transform: uppercase;
+    color: #aaa;
+}
+
+
+.date,
+.comments {
+    font-weight: 400;
+    color: #999;
+    text-transform: capitalize;
+}
+
+.date i,
+.comments i {
+    margin-right: 5px;
+    font-size: 1.1em;
+}
+
+.date::after,
+.comments::after {
+    content: '|';
+    display: inline-block;
+    margin: 0 7px;
+    font-size: 0.9em;
+    color: #ccc;
+}
+
+.meta-last::after {
+    display: none;
+}
