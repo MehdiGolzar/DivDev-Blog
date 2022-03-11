@@ -13,7 +13,7 @@ $(document).ready(function () {
             location.href = '/user/dashboard';
         }
     });
-
+      
     $('#createArticle-btn').click(function () { 
         $('#editor-form').submit() 
     });

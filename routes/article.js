@@ -11,6 +11,9 @@ const authorizeTools = require('../tools/authorization');
 // POST request to Create Article
 router.post('/', articleControllers.createArticle);
 
+// Post request to Upload Article Image
+// router.post('/uploadImage', generalTools.uploadAvatar.single('image'), articleControllers.uploadImage);
+
 
 // PUT request to Update a Article
 // router.put('/:id', articleControllers.updateArticle);
