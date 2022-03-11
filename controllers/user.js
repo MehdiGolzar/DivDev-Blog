@@ -7,10 +7,11 @@ const User = require('../models/user');
 /*-------------------------------------------------------------------------------*/
 const dashboard = async (req, res) => {
 
-    res.render('userDashboard', {
+    res.render('adminDashboard', {
         firstName: req.session.user.firstName,
         lastName: req.session.user.lastName,
         avatar: req.session.user.avatar,
+        role: req.session.user.role
     });
 
     // res.json({msg: 'Logged in'});

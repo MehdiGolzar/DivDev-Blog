@@ -1,9 +1,6 @@
 <div class="row">
     <!-- Articles -->
-    <% if (!articles) { %>
-    <div class="text-danger h2 text-center">There are no articles</div>
-    <% } else { %>
-        
+
     <% for( let i = 0; i < articles.length; i++ ) { %>
 
     <div class="post col-xl-5 bg-dark ms-4 me-4 mb-4">
@@ -49,7 +46,6 @@
         </ul>
     </nav>
 
-    <% } %>
 
 
 </div>

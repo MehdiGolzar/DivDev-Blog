@@ -211,7 +211,7 @@ const specificArticle = async function (req, res) {
         const articleId = req.params.articleId;
 
         let targetArticle = await Article.findOne({
-            articleId
+            _id: articleId
         }).populate('author', {
             firstName: 1,
             lastName: 1,
