@@ -3,7 +3,8 @@ const {
     writeFile,
     mkdir,
     access,
-    readFile
+    readFile,
+    rename
 } = require('fs/promises');
 const {
     join
@@ -18,6 +19,8 @@ const Article = require('../models/article');
 // require Genetal Tools
 const generalTools = require('../tools/general')
 
+
+
 // Create Article Controller
 const createArticle = async function (req, res) {
 
@@ -26,7 +29,7 @@ const createArticle = async function (req, res) {
             title: req.body.articleTitle,
             // content: req.body.articleContent.replace(/(<([^>]+)>)/gi, ""),
             content: req.body.articleContent,
-            summary: req.body.articleContent.slice(0, 150).replace(/(<([^>]+)>)/gi, "")
+            summary: req.body.articleContent.slice(0, 150).replace(/(<([^>]+)>)/gi, ""),
         }
 
         const savedAricle = await new Article({
@@ -43,10 +46,20 @@ const createArticle = async function (req, res) {
         const articleId = await generalTools.getDocId(savedAricle);
         const articlePath = join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.html';
 
+        // Create a HTML file whit Article content
         await writeFile(articlePath, newArticle.content);
 
+        // Article Image
+        await access(join(__dirname, `../public/articles/${req.session.user._id}/${req.session.user.username}_tempImage.png`))
+            .then(() => rename(join(__dirname, `../public/articles/${req.session.user._id}/${req.session.user.username}_tempImage.png`),
+                join(__dirname, `../public/articles/${req.session.user._id}/${articleId}.png`)))
+            .then(() => newArticle.image = `${req.session.user._id}/${articleId}.png`)
+            .catch(() => newArticle.image = 'article_default_image.png');
+
+        // Update Article to add src and imgae property
         await Article.findByIdAndUpdate(articleId, {
-            src: `/articles/${req.session.user._id}/${articleId}.html`
+            src: `/articles/${req.session.user._id}/${articleId}.html`,
+            image: newArticle.image
         });
 
         if (req.session.user.role === 'blogger') {
@@ -60,6 +73,15 @@ const createArticle = async function (req, res) {
     }
 }
 
+
+// Upload Article Image Controller
+const uploadArticleImage = async function (req, res) {
+    console.log(req.file);
+    res.json({
+        success: true,
+        tempImageSrc: `/articles/${req.session.user._id}/${req.file.filename}`
+    });
+}
 
 // // Update Article Controller
 // let updateArticle = async function (req, res) {
@@ -116,14 +138,14 @@ const myArticles = async function (req, res) {
             });
         });
 
- 
+
         // return res.json({
         //     success: true,
         //     msg: `You have ${allArticle.length} Article`,
         //     data: sendToUser
         // })
 
-        return res.render('articles', {
+        return res.render('articlesList', {
             pageTitle: "My Articles",
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
@@ -184,7 +206,7 @@ const allArticles = async function (req, res) {
         //     data: sendToUser
         // })
 
-        return res.render('articles', {
+        return res.render('articlesList', {
             pageTitle: "All Articles",
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
@@ -249,7 +271,7 @@ const specificArticle = async function (req, res) {
         //     data: sendToUser
         // })
 
-        return res.render('article', {
+        return res.render('oneArticle', {
             pageTitle: sendToUser.title,
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
@@ -270,6 +292,7 @@ const specificArticle = async function (req, res) {
 
 module.exports = {
     createArticle,
+    uploadArticleImage,
     // updateArticle,
     myArticles,
     allArticles,

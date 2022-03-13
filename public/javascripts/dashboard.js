@@ -13,18 +13,5 @@ $(document).ready(function () {
             location.href = '/user/dashboard';
         }
     });
-      
-    $('#createArticle-btn').click(function () { 
-        $('#editor-form').submit() 
-    });
-    
-    $('#myArticles-btn').click(function (e) { 
-        location.href = '/article/myArticles';
-    });
-    
-    $('#allArticles-btn').on('click', function () {
-        location.href = '/article/allArticles';
-    });
-
 
 });

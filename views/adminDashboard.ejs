@@ -729,16 +729,30 @@
           <h3 class="modal-title text-center w-100" id="editor-modalLabel">Write Your Article</h3>
         </div>
         <div class="modal-body">
+
+          <div id="image-container" class="d-flex flex-column align-item-center">
+            <div class="text-center mb-1">
+              <img src="/articles/article_default_Image.png" alt="Import Your Image" class="d-none" id="tempImage" width="500px" height="300px">
+            </div>
+            <div class="text-center mt-2 mb-3">
+              <input type="file" id="articleImageInput" name="articleImage" class="d-none" />
+              <button id="articleImage-btn" class="btn btn-secondary p-1 mb-1">Select article image</button></div>
+          </div>
+
           <form method="post" action="/article/" id="editor-form">
-            <div class="form-group">
+            <div>
               <label class="form-control text-center" for="articleTitle">
                 <h4>Title</h4>
               </label>
               <input type="text" name="articleTitle" class="form-control bg-light text-dark" id="articleTitle"
                 placeholder="Enter your title">
             </div>
-            <div name="articleContent" id="articleContent">Hello, World!</div>
+
+            <div name="articleContent" id="articleContent" class="mx-2">Hello, World!</div>
+
           </form>
+
+
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
@@ -775,6 +789,7 @@
 
   <!-- My Scripts -->
   <script src="/javascripts/dashboard.js"></script>
+  <script src="/javascripts/article.js"></script>
 
 
 

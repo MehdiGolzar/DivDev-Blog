@@ -5,6 +5,8 @@ const router = express.Router();
 // require Tools
 const articleControllers = require('../controllers/article')
 const authorizeTools = require('../tools/authorization');
+const generalTools = require('../tools/general');
+
 
 
 
@@ -12,7 +14,7 @@ const authorizeTools = require('../tools/authorization');
 router.post('/', articleControllers.createArticle);
 
 // Post request to Upload Article Image
-// router.post('/uploadImage', generalTools.uploadAvatar.single('image'), articleControllers.uploadImage);
+router.post('/uploadArticleImage', generalTools.uploadArticleImage.single('articleImage'), articleControllers.uploadArticleImage);
 
 
 // PUT request to Update a Article

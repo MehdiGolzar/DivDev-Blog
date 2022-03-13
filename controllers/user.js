@@ -3,7 +3,7 @@ const User = require('../models/user');
 
 
 /*-------------------------------------------------------------------------------*/
-/* Dashboard Controllers */
+/*---------------------------- Dashboard Controllers ----------------------------*/
 /*-------------------------------------------------------------------------------*/
 const dashboard = async (req, res) => {
 
@@ -18,9 +18,10 @@ const dashboard = async (req, res) => {
 }
 
 /*-------------------------------------------------------------------------------*/
-/* Profile Controllers */
-/*------------------------- ------------------------------------------------------*/
-// Controller of GET request to render dashaboard page
+/*----------------------------- Profile Controllers -----------------------------*/
+/*-------------------------------------------------------------------------------*/
+
+/*-----------------------  Render Profile Page Controller -----------------------*/
 const profile = (req, res) => {
 
     res.render('profile', {
@@ -35,7 +36,7 @@ const profile = (req, res) => {
     });
 }
 
-/*---------------------------- Update Profile Controller ----------------------------*/
+/*-------------------------- Update Profile Controller --------------------------*/
 const update = async (req, res) => {
     const updatedFields = {}
 
@@ -81,7 +82,7 @@ const update = async (req, res) => {
 
 };
 
-/*---------------------------- Upload Avatar Controller ----------------------------*/
+/*--------------------------- Upload Avatar Controller --------------------------*/
 const uploadAvatar = (req, res) => {
     User.findByIdAndUpdate(req.session.user._id, {
         avatar: req.file.filename
@@ -106,7 +107,6 @@ const uploadAvatar = (req, res) => {
 
 /*---------------------------- Delete User Controller ----------------------------*/
 const Delete = async (req, res) => {
-    // const targetUser = req.session.user.username;
 
     try {
         const deletedUser = await User.findByIdAndDelete(req.session.user._id);

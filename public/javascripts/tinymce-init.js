@@ -1,7 +1,7 @@
 tinymce.init({
     selector: '#articleContent',
     height: 400,
-    plugins: 'image',
-    contextmenu: 'image',
+    // plugins: 'image',
+    // contextmenu: 'image',
 
 });

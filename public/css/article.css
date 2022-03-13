@@ -56,3 +56,10 @@
 .meta-last::after {
     display: none;
 }
+
+
+.cardImage-container img {
+    width: 100%;
+    max-width: 300px;
+    height: auto;
+}

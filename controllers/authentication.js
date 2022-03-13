@@ -5,6 +5,7 @@ const {
 } = require('express-validator');
 
 
+
 /*---------------------------- Admin Create Controller ----------------------------*/
 // Controller of Post request to create Admin in first start
 const createAdmin = async (req, res) => {
@@ -39,7 +40,11 @@ const createAdmin = async (req, res) => {
     }
 }
 
-/*---------------------------- Register Controller ----------------------------*/
+
+/*-------------------------------------------------------------------------------*/
+/*----------------------------------- Register ----------------------------------*/
+/*-------------------------------------------------------------------------------*/
+
 // Controller of GET request to render register page
 const register_get = (req, res) => {
     res.render('register', {
@@ -49,14 +54,6 @@ const register_get = (req, res) => {
 
 //  Controller of POST request to register new user
 const register_post = async (req, res) => {
-
-    // // check required field
-    // if (!req.body.firstName || !req.body.lastName || !req.body.username || !req.body.email ||!req.body.phoneNumber || !req.body.password || !req.body.confirmPassword || !req.body.gender) {
-    // return res.status(406).json({msg: 'Not Acceptable'});
-    //     return res.json({
-    //         msg: 'All field is required'
-    //     });
-    // };
 
     // Check for validation errors
     const validationErrors = validationResult(req);
@@ -105,7 +102,13 @@ const register_post = async (req, res) => {
     }
 };
 
-/*---------------------------- Login Controller ----------------------------*/
+
+
+
+/*-------------------------------------------------------------------------------*/
+/*----------------------------------- Login ----------------------------------*/
+/*-------------------------------------------------------------------------------*/
+
 // Controller of GET request to render login page
 const login_get = (req, res) => {
     res.render('login', {
