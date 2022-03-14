@@ -18,7 +18,7 @@ router.post('/uploadArticleImage', generalTools.uploadArticleImage.single('artic
 
 
 // PUT request to Update a Article
-// router.put('/:id', articleControllers.updateArticle);
+router.put('/:id', articleControllers.updateArticle);
 
 // GET request to Get My Article
 router.get('/myArticles', articleControllers.myArticles);
@@ -27,7 +27,7 @@ router.get('/myArticles', articleControllers.myArticles);
 router.get('/allArticles', articleControllers.allArticles);
 
 // GET request to Get Specific Article
-router.get('/articles/:articleId', articleControllers.specificArticle);
+router.get('/articles/:articleId', authorizeTools.editAccessController, articleControllers.specificArticle);
 
 
 

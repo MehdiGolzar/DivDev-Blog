@@ -87,7 +87,8 @@ const uploadArticleImage = async function (req, res) {
 // let updateArticle = async function (req, res) {
 
 //     try {
-//         const targetArticle = await Article.find({}).populate('author');
+//         const targetArticleId = req.params.ArticleId;
+//         const targetArticle = await Article.find({id: targetArticleId}).populate('author');
 
 //     } catch (err) {
 //         return res.status(400).json({
@@ -230,6 +231,8 @@ const allArticles = async function (req, res) {
 const specificArticle = async function (req, res) {
 
     try {
+        console.log(editAccess);
+
         const articleId = req.params.articleId;
 
         let targetArticle = await Article.findOne({
@@ -277,6 +280,7 @@ const specificArticle = async function (req, res) {
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
+            editAccess: editAccess,
             article: sendToUser
         });
 
