@@ -14,19 +14,21 @@ function accessController(roles) {
     }
 }
 
-const editAccessController = async (userId, articleId) => {
-    return function (req, res, next) {
-        const authorId = await Article.findById(articleId);
-        if (userId !== authorId) {
-            let editAccess = false;
-            return next();
-        }
-        editAccess = true;
-        return next();
-    }
-}
+// const editAccessController = async (userId, articleId) => {
+//     return function (req, res, next) {
+//         const authorId = await Article.findById(articleId);
+//         console.log(authorId);
+        
+//         if (userId !== authorId) {
+//             let editAccess = false;
+//             return next();
+//         }
+//         editAccess = true;
+//         return next();
+//     }
+// }
 
 module.exports = {
     accessController,
-    editAccessController
+    // editAccessController
 }

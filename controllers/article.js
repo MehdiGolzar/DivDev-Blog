@@ -83,21 +83,21 @@ const uploadArticleImage = async function (req, res) {
     });
 }
 
-// // Update Article Controller
-// let updateArticle = async function (req, res) {
+// Update Article Controller
+let updateArticle = async function (req, res) {
 
-//     try {
-//         const targetArticleId = req.params.ArticleId;
-//         const targetArticle = await Article.find({id: targetArticleId}).populate('author');
+    try {
+        const targetArticleId = req.params.ArticleId;
+        const targetArticle = await Article.find({id: targetArticleId}).populate('author');
 
-//     } catch (err) {
-//         return res.status(400).json({
-//             success: false,
-//             msg: err
-//         });
-//     }
+    } catch (err) {
+        return res.status(400).json({
+            success: false,
+            msg: err
+        });
+    }
 
-// }
+}
 
 
 // Get My Article Controller
@@ -227,12 +227,11 @@ const allArticles = async function (req, res) {
 }
 
 
-// Get My Article Controller
+// Get Specific Article Controller
 const specificArticle = async function (req, res) {
 
     try {
-        console.log(editAccess);
-
+        
         const articleId = req.params.articleId;
 
         let targetArticle = await Article.findOne({
@@ -280,7 +279,7 @@ const specificArticle = async function (req, res) {
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
-            editAccess: editAccess,
+            // editAccess: editAccess,
             article: sendToUser
         });
 
@@ -297,7 +296,7 @@ const specificArticle = async function (req, res) {
 module.exports = {
     createArticle,
     uploadArticleImage,
-    // updateArticle,
+    updateArticle,
     myArticles,
     allArticles,
     specificArticle

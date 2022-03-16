@@ -27,7 +27,7 @@ router.get('/myArticles', articleControllers.myArticles);
 router.get('/allArticles', articleControllers.allArticles);
 
 // GET request to Get Specific Article
-router.get('/articles/:articleId', authorizeTools.editAccessController, articleControllers.specificArticle);
+router.get('/articles/:articleId', articleControllers.specificArticle);
 
 
 
