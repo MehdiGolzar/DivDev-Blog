@@ -80,7 +80,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="row justify-content-center align-items-center pt-3 pointer" data-bs-toggle="modal"
-                    data-bs-target="#editor-modal">
+                    data-bs-target="#editorModal">
                     <div class="icon col-4">
                       <i class="far fa-plus-square h1 text-success"></i>
                     </div>
@@ -93,7 +93,7 @@
             </div>
             <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body" id="myArticles-btn">
+                <div class="card-body" id="myArticlesBtn">
                   <div class="row justify-content-center align-items-center pt-3 pointer">
                     <div class="icon col-4">
                       <i class="fas fa-list h1 text-primary"></i>
@@ -107,9 +107,9 @@
             </div>
             <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body" id="allArticles-btn">
+                <div class="card-body" id="allArticlesBtn">
                   <div class="row justify-content-center align-items-center pt-3 pointer" data-bs-toggle="modal"
-                    data-bs-target="#editor-modal">
+                    data-bs-target="#editorModal">
                     <div class="icon col-4">
                       <i class="fas fa-list h1 text-warning"></i>
                     </div>
@@ -721,15 +721,15 @@
 
 
   <!-- The Modal -->
-  <div class="modal fade" id="editor-modal" tabindex="-1" role="dialog" data-bs-backdrop="static"
-    aria-labelledby="editor-modalLabel" aria-hidden="true">
+  <div class="modal fade" id="editorModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+    aria-labelledby="editorModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h3 class="modal-title text-center w-100" id="editor-modalLabel">Write Your Article</h3>
+          <h3 class="modal-title text-center w-100" id="editorModalLabel">Write Your Article</h3>
         </div>
         <div class="modal-body">
-          <form method="post" action="/article/" id="editor-form">
+          <form method="post" action="/article/" id="articleForm">
             <div class="form-group">
               <label class="form-control text-center" for="articleTitle">
                 <h4>Title</h4>
@@ -742,7 +742,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="createArticle-btn">Create</button>
+          <button type="button" class="btn btn-primary" id="createArticleBtn">Create</button>
         </div>
       </div>
     </div>

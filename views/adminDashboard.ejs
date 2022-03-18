@@ -29,10 +29,6 @@
   <link rel="shortcut icon" href="/images/favicon.png" />
 
   <!--------------------------------------- My Links & CSSs -------------------------------------->
-  <!-- TinyMCE -->
-  <script src="https://cdn.tiny.cloud/1/szrounrql3a21c0him2hta4e4umehm87iafsza2tx8vf91f6/tinymce/5/tinymce.min.js"
-    referrerpolicy="origin"></script>
-  <script src="/javascripts/tinymce-init.js"></script>
   <!-- jQuery -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <!-- Font Awesome -->
@@ -40,6 +36,7 @@
     crossorigin="anonymous" />
   <!-- My CSSs-->
   <link rel="stylesheet" href="/css/dashboard.css">
+  <link rel="stylesheet" href="/css/articleModal.css">
 
 </head>
 
@@ -80,7 +77,7 @@
               <div class="card">
                 <div class="card-body">
                   <div class="row justify-content-center align-items-center pt-3 pointer" data-bs-toggle="modal"
-                    data-bs-target="#editor-modal">
+                    data-bs-target="#articleModal">
                     <div class="icon col-4">
                       <i class="far fa-plus-square h1 text-success"></i>
                     </div>
@@ -93,7 +90,7 @@
             </div>
             <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body" id="myArticles-btn">
+                <div class="card-body" id="myArticlesBtn">
                   <div class="row justify-content-center align-items-center pt-3 pointer">
                     <div class="icon col-4">
                       <i class="far fa-file-alt h1 text-primary"></i>
@@ -107,9 +104,9 @@
             </div>
             <div class="col-xl-3 col-sm-6 grid-margin stretch-card">
               <div class="card">
-                <div class="card-body" id="allArticles-btn">
+                <div class="card-body" id="allArticlesBtn">
                   <div class="row justify-content-center align-items-center pt-3 pointer" data-bs-toggle="modal"
-                    data-bs-target="#editor-modal">
+                    data-bs-target="#editorModal">
                     <div class="icon col-4">
                       <i class="fas fa-list h1 text-warning"></i>
                     </div>
@@ -720,48 +717,64 @@
   </div>
 
 
-  <!-- The Modal -->
-  <div class="modal fade" id="editor-modal" tabindex="-1" role="dialog" data-bs-backdrop="static"
-    aria-labelledby="editor-modalLabel" aria-hidden="true">
+  <!-- The Create Modal -->
+  <div class="modal fade" id="articleModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
+    aria-labelledby="articleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
       <div class="modal-content">
-        <div class="modal-header">
-          <h3 class="modal-title text-center w-100" id="editor-modalLabel">Write Your Article</h3>
-        </div>
-        <div class="modal-body">
 
-          <div id="image-container" class="d-flex flex-column align-item-center">
+        <div class="modal-header">
+          <h3 class="modal-title text-center w-100" id="articleModalLabel">Write Your Article</h3>
+        </div>
+
+        <div class="modal-body">
+          <div id="imagePreviewContainer" class="d-flex flex-column align-item-center">
             <div class="text-center mb-1">
-              <img src="/articles/article_default_Image.png" alt="Import Your Image" class="d-none" id="tempImage" width="500px" height="300px">
+              <img src="/articles/article_default_Image.png" alt="Import Your Image" class="d-none" id="tempImage"
+                width="500px" height="300px">
             </div>
-            <div class="text-center mt-2 mb-3">
-              <input type="file" id="articleImageInput" name="articleImage" class="d-none" />
-              <button id="articleImage-btn" class="btn btn-secondary p-1 mb-1">Select article image</button></div>
           </div>
 
-          <form method="post" action="/article/" id="editor-form">
-            <div>
-              <label class="form-control text-center" for="articleTitle">
-                <h4>Title</h4>
-              </label>
-              <input type="text" name="articleTitle" class="form-control bg-light text-dark" id="articleTitle"
-                placeholder="Enter your title">
-            </div>
+          <div id="formContianer">
 
-            <div name="articleContent" id="articleContent" class="mx-2">Hello, World!</div>
+            <form id="articleForm" class="d-flex flex-column">
 
-          </form>
+              <!-- Form Header -->
+              <div class="row">
 
+                <!-- Title -->
+                <div class="col-10">
+                  <label class="form-control text-center" for="articleTitle">
+                    <h4>Title</h4>
+                  </label>
+                  <input type="text" name="articleTitle" class="form-control bg-light text-dark" id="articleTitleInput"
+                    placeholder="Enter your title">
+                </div>
+
+                <!-- Image -->
+                <div class="d-flex justify-content-center col-2 p-2">
+                  <button id="articleImageBtn" class="btn btn-lg btn-info p-2 fw-bold fs-6">Select image</button>
+                  <input type="file" id="articleImageInput" name="articleImage" class=" d-none" />
+                </div>
+
+              </div>
+
+              <!-- Form Content -->
+              <div class="row p-3">
+                <textarea name="articleContent" id="articleContent" class="">Hello, World!</textarea>
+              </div>
+
+            </form>
+          </div>
 
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="createArticle-btn">Create</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" id="createArticleBtn">Create</button>
       </div>
     </div>
   </div>
-
 
   <!-- container-scroller -->
   <!-- plugins:js -->

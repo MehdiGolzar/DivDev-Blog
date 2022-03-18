@@ -141,11 +141,11 @@ main.posts-listing .post-footer {
     margin: 0.8rem;
 }
 
-.article-card .card-image-row .card-image-container {
+.article-card .card-image-row .card-imagePreviewContainer {
     width: 90%;
 }
 
-.article-card .card-image-row .card-image-container .card-image {
+.article-card .card-image-row .card-imagePreviewContainer .card-image {
     width: 100%;
     height: 100%;
 } */
