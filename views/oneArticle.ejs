@@ -93,7 +93,31 @@
 
 
       <!-- The Edit Modal -->
-      <% include('./partials/articleModal.ejs')  %> 
+
+      <div class="modal fade" id="articleModal" tabindex="-1" aria-labelledby="articleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="articleModalLabel">Edit or Update</h5>
+            </div>
+            <div class="modal-body">
+              <form>
+                <div class="mb-3">
+                  <label for="articleTitle" class="col-form-label">Title:</label>
+                  <input type="text" class="form-control" id="articleTitle">
+                </div>
+                <div class="mb-3">
+                  <textarea class="form-control" id="articleContent"></textarea>
+                </div>
+              </form>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Cancel</button>
+              <button type="button" class="btn btn-primary" id="saveArticleBtn">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
 
     </div>
     <!-- page-body-wrapper ends -->
@@ -123,7 +147,7 @@
   <!-- My Scripts -->
   <script src="/javascripts/dashboard.js"></script>
   <script src="/javascripts/article.js"></script>
-  <script src="/javascripts/oneArticle.js"></script>
+  <!-- <script src="/javascripts/oneArticle.js"></script> -->
 
 
 

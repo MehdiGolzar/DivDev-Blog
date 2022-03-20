@@ -128,7 +128,7 @@ $(document).ready(function () {
         let formData = new FormData();
         let avatarFile = $('#avatarInput')[0].files[0];
         formData.append('avatar', avatarFile);
-        console.log(avatarFile);
+        
         $.ajax({
             url: '/user/uploadAvatar',
             type: 'post',

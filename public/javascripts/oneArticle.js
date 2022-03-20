@@ -9,33 +9,37 @@ $(document).ready(function () {
         e.preventDefault();
 
         let articleImage = $('#articleImage');
-        let articleImageSrc = articleImage.attr('src');
         let articleTitle = $('#articleTitle');
         let articleContent = $('#articleContent');
 
         if (editArticleBtn.text() === 'Edit') {
 
             // Article Buttons
-            editArticleBtn.text('Cancel')
-            saveArticlBtn.removeClass('d-none');
+            // editArticleBtn.text('Cancel')
+            // saveArticlBtn.removeClass('d-none');
 
             // Article Image
             let imageInput = `<input type="file" class="d-none" id="imageInput">`;
-            $("#imagePreviewContainer").append(imageInput);
+            $("#imageContainer").append(imageInput);
 
             articleImage.click(function () {
                 $('#imageInput').trigger('click');
             });
 
             $('#imageInput').on('change', function () {
-                articleImage.addClass('d-none');
+
 
                 let formData = new FormData();
                 let imageFile = $('#imageInput')[0].files[0];
                 formData.append('articleImage', imageFile);
                 const objectURL = URL.createObjectURL(imageFile);
-               
-                articleImage.attr('src', objectURL);
+
+
+                articleImage.addClass('d-none');
+                let imagePreview = `<img src=${objectURL} id="imagePreview">`;
+                $("#imageContainer").append(imagePreview);
+
+
             })
 
 
@@ -58,8 +62,11 @@ $(document).ready(function () {
             saveArticlBtn.addClass('d-none');
 
             // Article Image
-            articleImage.attr('src', articleImageSrc);
+            articleImage.removeClass('d-none');
             imageInput.remove();
+            imagePreview.remove();
+
+
 
             // Article Title
             articleTitle.removeClass('d-none');
@@ -72,13 +79,49 @@ $(document).ready(function () {
         }
 
 
-        saveArticlBtn.click(function (e) { 
+        saveArticlBtn.click(function (e) {
             e.preventDefault();
 
-            const updateArticle = {
-                
-            }
+            // const updateArticle = {
+            //     updatedTitle: articleTitle.val(),
+            //     updatedContent: articleTitle.val(),
+            //     updatedimage: articleimage.val(),
+
+            // }
+
+
+            let updateFormData = new FormData();
+            let updateImage = $('#imagePreview')[0].files[0];
+            updateFormData.append('articleImage', updateImage);
             
+            let updateTitle = $('#').val();
+
+            
+            $.ajax({
+                url: '/user/uploadAvatar',
+                type: 'post',
+                data: formData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+                    if (response.success === true) {
+                        $('#alert').css('color', '#00ff87');
+                        $('#alert').text(response.msg);
+                        $('#alert').fadeIn();
+                        setTimeout(() => {
+                            location.href = 'http://localhost:5005/user/dashboard';
+                        }, 2000);
+                    }
+                },
+                error: function (err) {
+                    console.log('err', err);
+                    $('#alert').css('color', '#ff142a');
+                    $('#alert').text('Avatar could not be uploaded');
+                    $('#alert').fadeIn();
+                    $('#alert').fadeOut(4000);
+                },
+            });
+
         });
 
 
