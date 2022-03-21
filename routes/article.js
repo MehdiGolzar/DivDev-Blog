@@ -16,9 +16,12 @@ router.post('/', articleControllers.createArticle);
 // Post request to Upload Article Image
 router.post('/uploadArticleImage', generalTools.uploadArticleImage.single('articleImage'), articleControllers.uploadArticleImage);
 
+// Post request to Update Article Image
+router.post('/uploadArticleImage/:articleId', generalTools.uploadArticleImage.single('articleImage'), articleControllers.uploadArticleImage);
+
 
 // PUT request to Update a Article
-router.put('/:id', articleControllers.updateArticle);
+router.put('/:articleId', articleControllers.updateArticle);
 
 // GET request to Get My Article
 router.get('/myArticles', articleControllers.myArticles);

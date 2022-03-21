@@ -62,10 +62,12 @@ const createArticle = async function (req, res) {
             image: newArticle.image
         });
 
-        if (req.session.user.role === 'blogger') {
-            return res.redirect('/user/dashboard');
-        }
-        return res.redirect('/admin/dashboard');
+        // if (req.session.user.role === 'blogger') {
+        //     return res.redirect('/user/dashboard');
+        // }
+        // return res.redirect('/admin/dashboard');
+
+        return res.json({success: true, msg: 'Article created successfully'})
 
     } catch (err) {
         console.log(err);
@@ -76,10 +78,9 @@ const createArticle = async function (req, res) {
 
 // Upload Article Image Controller
 const uploadArticleImage = async function (req, res) {
-    console.log(req.file);
     res.json({
         success: true,
-        tempImageSrc: `/articles/${req.session.user._id}/${req.file.filename}`
+        msg: `Image uploaded successfully`
     });
 }
 
@@ -87,14 +88,45 @@ const uploadArticleImage = async function (req, res) {
 let updateArticle = async function (req, res) {
 
     try {
-        const targetArticleId = req.params.ArticleId;
-        const targetArticle = await Article.find({id: targetArticleId}).populate('author');
+        const targetArticleId = req.params.articleId;
+
+        const updatedArticle = {
+            title: req.body.updatedTitle,
+            content: req.body.updatedContent,
+            summary: req.body.updatedContent.slice(0, 150).replace(/(<([^>]+)>)/gi, ""),
+        }
+
+        const articlePath = join(__dirname, `../public/articles/${req.session.user._id}/${targetArticleId}`) + '.html';
+
+        // Ower Write new Article Content 
+        await writeFile(articlePath, updatedArticle.content);
+
+        // Update in db
+        await Article.findByIdAndUpdate(targetArticleId, {
+            title: updatedArticle.title,
+            summary: updatedArticle.summary,
+            image: `${req.session.user._id}/${targetArticleId}.png`
+        });
+
+
+        // if (req.session.user.role === 'blogger') {
+        //     return res.redirect('/user/dashboard');
+        // }
+        // return res.redirect('/admin/dashboard');
+
+        return res.json({
+            success: true,
+            msg: 'redirect'
+        })
 
     } catch (err) {
-        return res.status(400).json({
-            success: false,
-            msg: err
-        });
+        // return res.status(400).json({
+        //     success: false,
+        //     msg: err
+        // });
+
+        return res.status(400).send(err)
+
     }
 
 }
@@ -231,7 +263,7 @@ const allArticles = async function (req, res) {
 const specificArticle = async function (req, res) {
 
     try {
-        
+
         const articleId = req.params.articleId;
 
         let targetArticle = await Article.findOne({
@@ -253,8 +285,8 @@ const specificArticle = async function (req, res) {
         const createdAt = targetArticle.createdAt.toString().slice(0, 16);
 
         const sendToUser = {
+            id: targetArticle.id,
             title: targetArticle.title,
-            // src: targetArticle.src,
             content: articleContent,
             summary: targetArticle.summary,
             image: targetArticle.image,

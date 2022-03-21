@@ -34,10 +34,19 @@ const articleImageStorage = multer.diskStorage({
         cb(null, join(__dirname, `../public/articles/${req.session.user._id}`));
     },
     filename: function (req, file, cb) {
-        // cb(null, Date.now() + '_' + file.originalname);
-        let extension = file.originalname.split(".").pop();
+
+        let articleId = req.params.articleId;
+
+        if (articleId) {
+            return cb(null, articleId + '.png');
+
+        }
+
+        // let extension = file.originalname.split(".").pop();
         // cb(null, req.session.user.username + `_` + 'tempImage' + '.' + extension);
-        cb(null, req.session.user.username + '_tempImage.png');
+        cb(null, req.session.user.username + '_tempImage.png'); 
+
+
 
 
     }
@@ -69,8 +78,26 @@ let getDocId = function (doc) {
     });
 }
 
+
+// function for Purification Request Body
+function bodyPurification(fieldsNameArray, body) {
+    let myBody = {};
+
+    for (const field of fieldsNameArray) {
+        // let existField = body.find(el => el.field === field)
+        if (body.field) {
+            myBody.field = body.field;
+        } else {
+            continue;
+        }
+    }
+
+    return myBody;
+}
+
 module.exports = {
     uploadAvatar,
     uploadArticleImage,
     getDocId,
+    bodyPurification,
 }

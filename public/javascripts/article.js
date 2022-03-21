@@ -1,67 +1,82 @@
 $(document).ready(function () {
 
 
-    $('#articleImageBtn').click(function () {
+    $('#articleImagePreview').click(function () {
         $('#articleImageInput').trigger('click');
     });
 
 
-    $('#articleImageInput').on('change', function () {
+    $('#articleImageInput').on('change', function (e) {
+        e.preventDefault();
 
-        
-        // formData.append('articleImage', articleImageFile);
-        // formData.append('articleImage', articleImageFile);
-        // formData.append('articleImage', articleImageFile);
+        let articleImageFile = $('#articleImageInput')[0].files[0];
+        const imagePreviewSrc = URL.createObjectURL(articleImageFile);
 
-        // console.log(articleImageFile);
-        // $.ajax({
-        //     url: '/article/uploadArticleImage',
-        //     type: 'post',
-        //     data: formData,
-        //     contentType: false,
-        //     processData: false,
-        //     success: function (response) {
-        //         if (response.success === true) {
-        //             const objectURL = URL.createObjectURL(articleImageFile);
-        //             console.log(objectURL);
-        //             $('#tempImage').removeClass('d-none');
-        //             $('#tempImage').attr('src', objectURL);
-
-        //         }
-        //     },
-        //     error: function (err) {
-        //         console.log('err', err);
-        //     },
-        // });
+        // $('#articleImagePreview').removeClass('d-none');
+        $('#articleImagePreview').attr('src', imagePreviewSrc);
     });
 
 
     $('#createArticleBtn').click(function () {
-        // $('#articleForm').submit()
 
-        let formData = new FormData();
+
+
         let articleImageFile = $('#articleImageInput')[0].files[0];
-        formData.append('articleImage', articleImageFile);
 
-        $.ajax({
-            url: '/article/',
-            type: 'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                if (response.success === true) {
-                    const objectURL = URL.createObjectURL(articleImageFile);
-                    console.log(objectURL);
-                    $('#tempImage').removeClass('d-none');
-                    $('#tempImage').attr('src', objectURL);
+        if (!!articleImageFile) {
+            
+            let imageFormData = new FormData();
+            imageFormData.append('articleImage', articleImageFile);
+
+            $.ajax({
+                url: `/article/uploadArticleImage`,
+                type: 'POST',
+                data: imageFormData,
+                contentType: false,
+                processData: false,
+                success: function (response) {
+
+                    console.log(response);
+
+                },
+                error: function (err) {
+                    console.log('err', err);
 
                 }
+            });
+        }
+
+        const newArticle = {
+            articleTitle: $('#articleTitleInput').val(),
+            articleContent: $('#articleContentTextarea').val()
+        }
+
+        $.ajax({
+            url: `/article/`,
+            type: 'POST',
+            data: JSON.stringify(newArticle),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+
+                console.log(response);
+
+                if (response.success === true) {
+                    let userRole = $('#role').text();
+                    if (userRole === 'blogger') {
+                        return location.href = `/user/dashboard`;
+
+                    }
+                    return location.href = `/admin/dashboard`;
+                }
+
             },
             error: function (err) {
                 console.log('err', err);
-            },
+
+            }
         });
+
     });
 
 
@@ -84,7 +99,7 @@ $(document).ready(function () {
         //     data: "data",
         //     dataType: "dataType",
         //     success: function (response) {
-                
+
         //     }
         // });
     });

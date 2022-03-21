@@ -1,31 +1,3 @@
-<p>In dealing with distribution of load, one concern is overload. Over‐</p>
-<p>loading a server will cause it to queue connections in a listen queue.</p>
-<p>If the load balancer has no regard for the upstream server, it can</p>
-<p>load the server&rsquo;s listen queue beyond repair. The ideal approach is</p>
-<p>for the load balancer to be aware of the connection limitations of the</p>
-<p>server and queue the connections itself so that it can send the con‐</p>
-<p>nection to the next available server with understanding of load as a</p>
-<p>whole. Depending on the upstream server to process its own queue</p>
-<p>will lead to poor user experience as connections start to timeout.</p>
-<p>NGINX Plus provides a solution by allowing connections to queue</p>
-<p>at the load balancer and by making informed decisions on where it</p>
-<p>sends the next request or session.</p>
-<p>The max_conns parameter on the server directive within the</p>
-<p>upstream block provides NGINX Plus with a limit of how many</p>
-<p>connections each upstream server can handle. This parameter is</p>
-<p>configurable in order to match the capacity of a given server. When</p>
-<p>the number of current connections to a server meets the value of the</p>
-<p>max_conns parameter specified, NGINX Plus will stop sending new</p>
-<p>requests or sessions to that server until those connections are</p>
-<p>released.</p>
-<p>Optionally, in NGINX Plus, if all upstream servers are at their</p>
-<p>max_conns limit, NGINX Plus can start to queue new connections</p>
-<p>until resources are freed to handle those connections. Specifying a</p>
-<p>queue is optional. When queuing, we must take into consideration a</p>
-<p>reasonable queue length. Much like in everyday life, users and appli‐</p>
-<p>cations would much rather be asked to come back after a short</p>
-<p>period of time than wait in a long line and still not be served. The</p>
-<p>queue directive in an upstream block specifies the max length of the</p>
-<p>queue. The timeout parameter of the queue directive specifies how</p>
-<p>long any given request should wait in queue before giving up, which</p>
-<p>defaults to 60 seconds.</p>
+
+                    
+                    don't think what you want to do is possible. An AJAX request is meant just to pass data back and forth. What happens now is that you need to script client side behavior on your end. This means the AJAX request will pass a 302 and other data that comes along for the ride to the callback on JS. No client side behavior can be altered from the server. It is up to you to do something with the AJAX returned values. If 500, throw an error message, 200 do something etc.

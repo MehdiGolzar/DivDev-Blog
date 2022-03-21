@@ -1,140 +1,94 @@
 $(document).ready(function () {
 
-    // Ftech editAccess to disable or enable Edit Button
-    let editArticleBtn = $('#editArticlBtn')
-    let saveArticlBtn = $('#saveArticlBtn')
+
+    let articleImageSrc = $('#articleImage').attr('src');
+    let articleTitle = $('#articleTitle').text();
+    let articleContent = $('#articleContent').text();
 
 
-    editArticleBtn.click(function (e) {
+    let editArticleImagePreview = $('#editArticleImagePreview');
+    let editArticleTitle = $('#editArticleTitle');
+    let editArticleContent = $('#editArticleContent');
+
+    let articleId = $('#editArticleBtn').attr('articleId');
+
+    $('#editArticleBtn').click(function (e) {
         e.preventDefault();
 
-        let articleImage = $('#articleImage');
-        let articleTitle = $('#articleTitle');
-        let articleContent = $('#articleContent');
+        editArticleImagePreview.attr('src', articleImageSrc);
+        editArticleTitle.val(articleTitle);
+        editArticleContent.val(articleContent);
 
-        if (editArticleBtn.text() === 'Edit') {
+    });
 
-            // Article Buttons
-            // editArticleBtn.text('Cancel')
-            // saveArticlBtn.removeClass('d-none');
+    $('#editArticleImagePreview').click(function () {
+        console.log('0k');
+        $('#editArticleImageInput').trigger('click');
+    });
 
-            // Article Image
-            let imageInput = `<input type="file" class="d-none" id="imageInput">`;
-            $("#imageContainer").append(imageInput);
+    $('#editArticleImageInput').change(function (e) {
+        e.preventDefault();
+        let articleImageFile = $('#editArticleImageInput')[0].files[0];
+        const imagePreviewSrc = URL.createObjectURL(articleImageFile);
 
-            articleImage.click(function () {
-                $('#imageInput').trigger('click');
-            });
+        $('#editArticleImagePreview').removeClass('d-none');
+        $('#editArticleImagePreview').attr('src', imagePreviewSrc);
 
-            $('#imageInput').on('change', function () {
+    });
 
+    $('#saveArticleBtn').click(function (e) {
+        e.preventDefault();
 
-                let formData = new FormData();
-                let imageFile = $('#imageInput')[0].files[0];
-                formData.append('articleImage', imageFile);
-                const objectURL = URL.createObjectURL(imageFile);
+        let imageFormData = new FormData();
+        let articleImageFile = $('#editArticleImageInput')[0].files[0];
+        imageFormData.append('articleImage', articleImageFile);
 
+        $.ajax({
+            url: `/article/uploadArticleImage/${articleId}`,
+            type: 'post',
+            data: imageFormData,
+            contentType: false,
+            processData: false,
+            success: function (response) {
 
-                articleImage.addClass('d-none');
-                let imagePreview = `<img src=${objectURL} id="imagePreview">`;
-                $("#imageContainer").append(imagePreview);
+                console.log(response);
 
+            },
+            error: function (err) {
+                console.log('err', err);
 
-            })
-
-
-            // Article Title
-            articleTitle.addClass('d-none');
-            let titleInput = `<input type="text" id="titleInput" value=${articleTitle.text()}>`;
-            $("#titleContainer").append(titleInput);
-
-
-            // Article Content
-            $(articleContent).addClass('d-none');
-            let contentTextarea = `<textarea id="contentTextarea" rows="20" value=${articleContent.text()}></textarea>`;
-            $("#contentContainer").append(contentTextarea);
-
-
-        } else {
-
-            // Article Buttons
-            editArticleBtn.text('Edit')
-            saveArticlBtn.addClass('d-none');
-
-            // Article Image
-            articleImage.removeClass('d-none');
-            imageInput.remove();
-            imagePreview.remove();
-
-
-
-            // Article Title
-            articleTitle.removeClass('d-none');
-            titleInput.remove();
-
-            // Article Content
-            articleContent.removeClass('d-none');
-            contentTextarea.remove();
-
-        }
-
-
-        saveArticlBtn.click(function (e) {
-            e.preventDefault();
-
-            // const updateArticle = {
-            //     updatedTitle: articleTitle.val(),
-            //     updatedContent: articleTitle.val(),
-            //     updatedimage: articleimage.val(),
-
-            // }
-
-
-            let updateFormData = new FormData();
-            let updateImage = $('#imagePreview')[0].files[0];
-            updateFormData.append('articleImage', updateImage);
-            
-            let updateTitle = $('#').val();
-
-            
-            $.ajax({
-                url: '/user/uploadAvatar',
-                type: 'post',
-                data: formData,
-                contentType: false,
-                processData: false,
-                success: function (response) {
-                    if (response.success === true) {
-                        $('#alert').css('color', '#00ff87');
-                        $('#alert').text(response.msg);
-                        $('#alert').fadeIn();
-                        setTimeout(() => {
-                            location.href = 'http://localhost:5005/user/dashboard';
-                        }, 2000);
-                    }
-                },
-                error: function (err) {
-                    console.log('err', err);
-                    $('#alert').css('color', '#ff142a');
-                    $('#alert').text('Avatar could not be uploaded');
-                    $('#alert').fadeIn();
-                    $('#alert').fadeOut(4000);
-                },
-            });
-
+            }
         });
 
 
+        const updatedArticle = {
+            updatedTitle: editArticleTitle.val(),
+            updatedContent: editArticleContent.val()
+        }
+
+        $.ajax({
+            url: `/article/${articleId}`,
+            type: 'put',
+            data: JSON.stringify(updatedArticle),
+            contentType: "application/json",
+            dataType: "json",
+            success: function (response) {
+
+                console.log(response);
+
+                if (response.success === true) {
+                    location.href = `/article/articles/${articleId}`
+                }
+
+            },
+            error: function (err) {
+                console.log('err', err);
+
+            }
+        });
 
 
+    })
 
-
-
-
-
-
-
-
-    });
 
 });

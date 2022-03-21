@@ -25,7 +25,6 @@
                 <div class="date h5 d-flex pt-3"><i class="icon-clock"></i><%= article.createdAt %> </div>
                 <div class="comments meta-last h5 d-flex pt-3"><i class="icon-comment"></i>12</div>
             </footer>
-            <button class="btn btn-warning px-5 py-2" id="editArticlBtn"  data-bs-toggle="modal" data-bs-target="#articleModal" data-bs-whatever="@getbootstrap">Edit</button>
-            <%# <button class="btn btn-success px-5 py-2 d-none" id="saveArticlBtn">Save</button> %> 
+            <button class="btn btn-warning px-5 py-2" id="editArticleBtn" articleId="<%= article.id %>" data-bs-toggle="modal" data-bs-target="#editArticleModal">Edit</button>
         </div>
     </div>
