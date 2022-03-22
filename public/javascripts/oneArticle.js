@@ -89,22 +89,52 @@ $(document).ready(function () {
 
     });
 
-    $('#deleteArticleBtn').click(function (e) { 
+    $('#deleteArticleBtn').click(function (e) {
         // e.preventDefault();
         $.ajax({
             type: "DELETE",
             url: `/article/${articleId}`,
             success: function (response) {
                 console.log(response);
-                if(response.success === true) {
+                if (response.success === true) {
                     location.href = '/article/myArticles'
                 }
             },
-            error: function(err) {
+            error: function (err) {
                 console.log('err', err);
             }
         });
     });
 
+
+    // Comment
+    $('#commentInput').keyup(function (event) {
+
+        if (event.keyCode === 13) {
+            event.preventDefault();
+
+            let commentContent = $('#commentInput').val();
+
+            let newComment = {
+                content: commentContent,
+                articleId: articleId
+            }
+
+            $.ajax({
+                type: "post",
+                url: "/comment",
+                data: JSON.stringify(newComment),
+                contentType: "application/json",
+                dataType: "json",
+                success: function (response) {
+                    console.log(response);
+                },
+                error: function (err) {
+                    console.log(err);
+                }
+            });
+
+        }
+    });
 
 });
