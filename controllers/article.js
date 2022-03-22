@@ -16,6 +16,8 @@ const mongoose = require('mongoose');
 // require Models
 const User = require('../models/user');
 const Article = require('../models/article');
+const Comment = require('../models/comment');
+
 
 // require Genetal Tools
 const generalTools = require('../tools/general')
@@ -288,6 +290,18 @@ const specificArticle = async function (req, res) {
         const articleContent = await readFile(join(__dirname, '../public', targetArticle.src), 'utf-8')
         const createdAt = targetArticle.createdAt.toString().slice(0, 16);
 
+        const articleComments = await Comment.find({
+            article: targetArticle.id
+        }, {
+            content: 1,
+            createdAt: 1
+        }).populate('author', {
+            firstName: 1,
+            lastName: 1,
+            avatar: 1
+        }).lean();
+
+
         const sendToUser = {
             id: targetArticle.id,
             title: targetArticle.title,
@@ -300,7 +314,8 @@ const specificArticle = async function (req, res) {
                 firstName: targetArticle.author.firstName,
                 lastName: targetArticle.author.lastName,
                 avatar: targetArticle.author.avatar
-            }
+            },
+            comments: articleComments
         };
 
         // return res.json({

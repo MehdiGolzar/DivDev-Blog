@@ -128,6 +128,9 @@ $(document).ready(function () {
                 dataType: "json",
                 success: function (response) {
                     console.log(response);
+                    if (response.success === true) {
+                        location.href = `/article/${articleId}`
+                    }
                 },
                 error: function (err) {
                     console.log(err);

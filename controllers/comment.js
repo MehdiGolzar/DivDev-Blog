@@ -36,9 +36,11 @@ const createComment = async (req, res) => {
             author: req.session.user._id
         });
 
+        await saveComment.save();
+
         return res.json({
             success: true,
-            data: saveComment
+            msg: 'Comment added successfully'
         });
 
     } catch (err) {
