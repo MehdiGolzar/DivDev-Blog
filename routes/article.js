@@ -13,24 +13,26 @@ const generalTools = require('../tools/general');
 // POST request to Create Article
 router.post('/', articleControllers.createArticle);
 
-// Post request to Upload Article Image
+// POST request to Upload Article Image
 router.post('/uploadArticleImage', generalTools.uploadArticleImage.single('articleImage'), articleControllers.uploadArticleImage);
-
-// Post request to Update Article Image
-router.post('/uploadArticleImage/:articleId', generalTools.uploadArticleImage.single('articleImage'), articleControllers.uploadArticleImage);
-
-
-// PUT request to Update a Article
-router.put('/:articleId', articleControllers.updateArticle);
-
-// GET request to Get My Article
-router.get('/myArticles', articleControllers.myArticles);
 
 // GET request to Get All Article
 router.get('/allArticles', articleControllers.allArticles);
 
+// GET request to Get My Article
+router.get('/myArticles', articleControllers.myArticles);
+
 // GET request to Get Specific Article
-router.get('/articles/:articleId', articleControllers.specificArticle);
+router.get('/:articleId', articleControllers.specificArticle);
+
+// PUT request to Update Specific Article
+router.put('/:articleId', articleControllers.updateArticle);
+
+// POST request to Update Specific Article Image
+router.post('/updateArticleImage/:articleId', generalTools.uploadArticleImage.single('articleImage'), articleControllers.uploadArticleImage);
+
+// DELETE requset to Delete Specific Article
+router.delete('/:articleId', articleControllers.deleteArticle)
 
 
 

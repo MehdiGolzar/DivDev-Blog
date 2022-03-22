@@ -22,7 +22,6 @@ $(document).ready(function () {
     });
 
     $('#editArticleImagePreview').click(function () {
-        console.log('0k');
         $('#editArticleImageInput').trigger('click');
     });
 
@@ -44,7 +43,7 @@ $(document).ready(function () {
         imageFormData.append('articleImage', articleImageFile);
 
         $.ajax({
-            url: `/article/uploadArticleImage/${articleId}`,
+            url: `/article/updateArticleImage/${articleId}`,
             type: 'post',
             data: imageFormData,
             contentType: false,
@@ -77,7 +76,7 @@ $(document).ready(function () {
                 console.log(response);
 
                 if (response.success === true) {
-                    location.href = `/article/articles/${articleId}`
+                    location.href = `/article/${articleId}`
                 }
 
             },
@@ -88,7 +87,24 @@ $(document).ready(function () {
         });
 
 
-    })
+    });
+
+    $('#deleteArticleBtn').click(function (e) { 
+        // e.preventDefault();
+        $.ajax({
+            type: "DELETE",
+            url: `/article/${articleId}`,
+            success: function (response) {
+                console.log(response);
+                if(response.success === true) {
+                    location.href = '/article/myArticles'
+                }
+            },
+            error: function(err) {
+                console.log('err', err);
+            }
+        });
+    });
 
 
 });

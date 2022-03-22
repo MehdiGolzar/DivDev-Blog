@@ -4,7 +4,8 @@ const {
     mkdir,
     access,
     readFile,
-    rename
+    rename,
+    unlink
 } = require('fs/promises');
 const {
     join
@@ -67,7 +68,10 @@ const createArticle = async function (req, res) {
         // }
         // return res.redirect('/admin/dashboard');
 
-        return res.json({success: true, msg: 'Article created successfully'})
+        return res.json({
+            success: true,
+            msg: 'Article created successfully'
+        })
 
     } catch (err) {
         console.log(err);
@@ -324,6 +328,28 @@ const specificArticle = async function (req, res) {
 }
 
 
+// Delete Article Controller
+const deleteArticle = async function (req, res) {
+
+    try {
+
+        const articleId = req.params.articleId;
+
+        await Article.findByIdAndDelete(articleId);
+        await unlink(join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.html');
+        await unlink(join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.png');
+
+        res.json({
+            success: true,
+            msg: 'Article deleted successfully'
+        });
+
+    } catch (err) {
+        console.log(err);
+    }
+}
+
+
 
 module.exports = {
     createArticle,
@@ -331,6 +357,7 @@ module.exports = {
     updateArticle,
     myArticles,
     allArticles,
-    specificArticle
+    specificArticle,
+    deleteArticle
 
 }
