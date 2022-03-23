@@ -1,13 +1,15 @@
 $(document).ready(function () {
 
-    const usersListTable = `<div class="col-12 grid-margin">
+  let clickCounter = 0;
+
+  const usersListDiv = `<div class="col-12 grid-margin">
     <div class="card">
       <div class="card-body">
-        <h4 class="card-title">Order Status</h4>
+        <h3 class="card-title">Users List</h3>
         <div class="table-responsive">
-          <table class="table" id="userslistTable">
+          <table class="table">
             <thead>
-              <tr>
+              <tr class="text-center">
                 <th> Full Name </th>
                 <th> Username </th>
                 <th> Email </th>
@@ -17,7 +19,7 @@ $(document).ready(function () {
                 <th> Registered in </th>
               </tr>
             </thead>
-            <tbody>
+            <tbody id="tbody">
             </tbody>
           </table>
         </div>
@@ -26,50 +28,71 @@ $(document).ready(function () {
   </div>`;
 
 
-//     let userTr = `<tr>
-//     <td>
-//       <img src="http://localhost:5005/images/avatars/${userAvatar}">
-//       <span class="ps-2"> ${userFirstName} ${userLastName} </span>
-//     </td>
-//     <td> ${userUsername} </td>
-//     <td> ${userEmail} </td>
-//     <td> ${userPhoneNumber} </td>
-//     <td> ${userGender} </td>
-//     <td> ${userArticles} </td>
-//     <td>
-//       <div class="badge badge-outline-primary">Actions</div>
-//     </td>
-//   </tr>`
-    
- 
+// Users List
+  $('#usersListBtn').click(function (e) {
+    e.preventDefault();
 
-    $('#usersListBtn').click(function (e) { 
-        e.preventDefault();
-        console.log('0K');
+    if (clickCounter === 0) {
+      clickCounter++
 
-        $.ajax({
-            type: "GET",
-            url: "/admin/getUsers",
-            dataType: "json",
-            success: function (response) {
-                console.log(response);
-            },
-            error: function (err) {
-                console.log(err);
+      $.ajax({
+        type: "GET",
+        url: "/admin/getUsers",
+        dataType: "json",
+        success: function (res) {
+          console.log(res);
+          if (res.success === true) {
+            $('#usersListContainer').append(usersListDiv)
+
+            for (const user of res.data) {
+              let userTr = `<tr>
+                <td>
+                <img src="/images/avatars/${user.avatar}">
+                <span class="ps-2"> ${user.firstName} ${user.lastName} </span>
+                </td>
+                <td> ${user.username} </td>
+                <td> ${user.email} </td>
+                <td> ${user.phoneNumber} </td>
+                <td> ${user.gender} </td>
+                <td> ${user.articles} </td>
+                <td>
+                <div class="btn btn-outline-primary" userId="${user._id}">Reset Pass</div>
+                <div class="btn btn-outline-danger delete-user-btn" userId="${user._id}">Delete</div>
+                </td>
+              </tr>`;
+
+              $('#tbody').append(userTr);
             }
-        });
+
+          } else {
+            $('#usersListContainer').append(`<p>${res.msg}</p>`)
+          }
+
+        },
+        error: function (err) {
+          console.log(err);
+        }
+      });
+
+      $('#usersListContainer').toggleClass('d-none', '');
+
+    } else {
+      $('#usersListContainer').toggleClass('d-none', '');
+    }
 
 
 
 
-        // $('#usersListContainer').toggleClass('d-none', '');
-        // $('#usersListContainer').append(usersListTable);
+  });
 
-    });
-
-
-
-
+// Delete User
+$('#usersListContainer').on("click", ".delete-user-btn", function(e){
+  e.preventDefault();
+  
+  let userId = $(e.target).attr('userId');
+  console.log(userId);
+  
+});
 
 
 

@@ -26,11 +26,16 @@ router.put('/update', adminControllers.update);
 // POST request to Upload Avatar
 router.post('/uploadAvatar', generalTools.uploadAvatar.single('avatar'), adminControllers.uploadAvatar);
 
-// DELETE request to Delete User
+// DELETE request to Delete Admin
 router.delete('/delete', adminControllers.Delete);
 
 // GET request to get Users List
 router.get('/getUsers', adminControllers.getUsers);
+
+// DELETE request to Delete User
+router.delete('/:userId', adminControllers.DeleteUser);
+
+
 
 
 

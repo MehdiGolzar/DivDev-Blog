@@ -65,11 +65,7 @@ const UserSchema = new mongoose.Schema({
     type: String,
     enum: ['blogger', 'admin'],
     default: 'blogger'
-  },
-  articles: [{
-    type: Schema.Types.ObjectId,
-    ref: 'Article'
-  }]
+  }
 });
 
 // Hash Password
@@ -87,9 +83,12 @@ UserSchema.pre('save', function (next) {
 
 });
 
-UserSchema.post('save', function (doc, next) {
-  next()
-});
+// UserSchema.post('save', function (doc, next) {
+//   next()
+// });
 
+// UserSchema.pre("deleteOne", async function (next) {
+//   Artci
+// })
 
 module.exports = mongoose.model("User", UserSchema);

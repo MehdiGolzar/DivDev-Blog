@@ -1,4 +1,7 @@
 const User = require('../models/user');
+const Article = require('../models/article');
+const Comment = require('../models/comment');
+
 
 /*-------------------------------------------------------------------------------*/
 /* Dashboard Controllers */
@@ -132,19 +135,28 @@ const Delete = async (req, res) => {
 // Get list of users controller
 const getUsers = async (req, res) => {
 
-    const usersList = await User.find({role: 'blogger'}, {password: 0, role: 0});
-
-    console.log(usersList);
+    const usersList = await User.find({role: 'blogger'}, {password: 0, role: 0}).populate('Article', );
 
     if (!usersList) {
-        return res.status(404).json({success: false, msg: 'No users available'});
+        return res.json({success: false, msg: 'No users available'});
     }
+
 
     res.json({
         success: true,
         data: usersList
     });
 }
+
+
+// const deleteUser = async (req, res) => {
+//     const userId = req.params.userId;
+
+//     await User.findByIdAndDelete(userId);
+
+//     await Article.deleteMany({author: userId});
+// }
+
 
 module.exports = {
     dashboard,

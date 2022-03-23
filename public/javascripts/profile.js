@@ -10,14 +10,14 @@ $(document).ready(function () {
         if (logoutBtn.text() === 'Delete') {
             $.ajax({
                 type: "DELETE",
-                url: "http://localhost:5005/user/delete",
+                url: "/user/delete",
                 success: function (response) {
                     if (response.success === true) {
                         $('#alert').css('color', '#ff142a');
                         $('#alert').text(response.msg);
                         $('#alert').fadeIn();
                         setTimeout(() => {
-                            return location.href = 'http://localhost:5005/'
+                            return location.href = '/'
                         }, 3000)
                     }
                 },
@@ -25,17 +25,19 @@ $(document).ready(function () {
                     console.log(err);
                 }
             });
-        } else {
+        } else  {
+            console.log('OK');
             $.ajax({
-                type: "get",
-                url: "http://localhost:5005/auth/logout",
+                type: "GET",
+                url: "/auth/logout",
                 success: function (response) {
+                    console.log(response);
                     if (response.success === true) {
                         $('#alert').css('color', '#57b0ff');
                         $('#alert').text(response.msg);
                         $('#alert').fadeIn();
                         setTimeout(() => {
-                            return location.href = 'http://localhost:5005/'
+                            return location.href = '/'
                         }, 3000)
                     }
                 },
@@ -141,7 +143,7 @@ $(document).ready(function () {
                     $('#alert').text(response.msg);
                     $('#alert').fadeIn();
                     setTimeout(() => {
-                        location.href = 'http://localhost:5005/user/dashboard';
+                        location.href = 'http://localhost:5005/user/profile';
                     }, 2000);
                 }
             },
