@@ -127,15 +127,17 @@ const Delete = async (req, res) => {
 }
 
 /*-------------------------------------------------------------------------------*/
-/* User Operations Controllers */
+/////////////////////////////* Admin Operations Controllers *//////////////////////
 /*-------------------------------------------------------------------------------*/
 // Get list of users controller
 const getUsers = async (req, res) => {
 
-    const usersList = await User.find({});
+    const usersList = await User.find({role: 'blogger'}, {password: 0, role: 0});
+
     console.log(usersList);
+
     if (!usersList) {
-        return res.status(500).send('Internal server error');
+        return res.status(404).json({success: false, msg: 'No users available'});
     }
 
     res.json({

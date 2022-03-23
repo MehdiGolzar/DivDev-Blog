@@ -13,24 +13,23 @@ const generalTools = require('../tools/general');
 
 
 /*---------------------------- Dashboard ----------------------------*/
-// Get request to Render Dashboard
+// GET request to Render Dashboard
 router.get("/dashboard", adminControllers.dashboard);
 
 /*---------------------------- Profile ----------------------------*/
-// Get request to Render Profile
+// GET request to Render Profile
 router.get("/profile", adminControllers.profile);
 
-// Put request to Update Profile
+// PUT request to Update Profile
 router.put('/update', adminControllers.update);
 
-// Post request to Upload Avatar
+// POST request to Upload Avatar
 router.post('/uploadAvatar', generalTools.uploadAvatar.single('avatar'), adminControllers.uploadAvatar);
 
-// Delete request to Delete User
+// DELETE request to Delete User
 router.delete('/delete', adminControllers.Delete);
 
-
-
+// GET request to get Users List
 router.get('/getUsers', adminControllers.getUsers);
 
 
