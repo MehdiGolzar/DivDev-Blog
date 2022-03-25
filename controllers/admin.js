@@ -1,3 +1,13 @@
+// require core moduls
+const {
+    unlink,
+    rm
+} = require('fs/promises');
+const {
+    join
+} = require('path');
+
+// require Models
 const User = require('../models/user');
 const Article = require('../models/article');
 const Comment = require('../models/comment');
@@ -135,10 +145,18 @@ const Delete = async (req, res) => {
 // Get list of users controller
 const getUsers = async (req, res) => {
 
-    const usersList = await User.find({role: 'blogger'}, {password: 0, role: 0}).populate('Article', );
+    const usersList = await User.find({
+        role: 'blogger'
+    }, {
+        password: 0,
+        role: 0
+    });
 
     if (!usersList) {
-        return res.json({success: false, msg: 'No users available'});
+        return res.json({
+            success: false,
+            msg: 'No users available'
+        });
     }
 
 
@@ -149,13 +167,59 @@ const getUsers = async (req, res) => {
 }
 
 
-// const deleteUser = async (req, res) => {
-//     const userId = req.params.userId;
+const deleteUser = async (req, res) => {
 
-//     await User.findByIdAndDelete(userId);
+    try {
+        const userId = req.params.userId;
 
-//     await Article.deleteMany({author: userId});
-// }
+        // Delete user
+        // await User.findByIdAndDelete(userId);
+
+        // Find username of user for delete avatar
+        const targetUser = await User.findOne({
+            _id: userId
+        }, {
+            username: 1
+        }).lean();
+
+        // Delete user avatar in file system
+        await unlink(join(__dirname, `../public/images/avatars/${targetUser.username}_avatar.jpg`));
+
+        // Delete deleted user articles
+        await Article.deleteMany({
+            author: userId
+        });
+
+        // Delete articles in file system
+        await rm(join(__dirname, `../public/articles/${userId}`), { recursive: true, force: true });
+
+        // Delete deleted user articles comments
+        const userArticlesId = await Article.find({
+            author: userId
+        }, {
+            _id: 1
+        });
+
+        console.log(userArticlesId);
+
+        await Comment.deleteMany({
+            article: userArticlesId
+        });
+
+        // Delete deleted user comments
+        await Comment.deleteMany({
+            author: userId
+        });
+
+        res.json({
+            success: true,
+            msg: 'User deleted successfully'
+        })
+
+    } catch (err) {
+        return res.status(400).send(err)
+    }
+}
 
 
 module.exports = {
@@ -165,4 +229,5 @@ module.exports = {
     uploadAvatar,
     Delete,
     getUsers,
+    deleteUser,
 }

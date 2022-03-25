@@ -14,4 +14,18 @@ $(document).ready(function () {
         }
     });
 
+    $('nav').on('click', '.logout-btn', function (e) {
+        e.preventDefault();
+        $.ajax({
+            type: "GET",
+            url: "/auth/logout",
+            success: function (res) {
+                return location.href = '/';
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+    });
+
 });

@@ -91,6 +91,18 @@ $('#usersListContainer').on("click", ".delete-user-btn", function(e){
   
   let userId = $(e.target).attr('userId');
   console.log(userId);
+
+  $.ajax({
+    type: "DELETE",
+    url: `/admin/${userId}`,
+    dataType: "json",
+    success: function (res) {
+      console.log(res);
+    },
+    error: function (err) {
+      console.log(err);
+    }
+  });
   
 });
 

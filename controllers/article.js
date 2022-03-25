@@ -255,10 +255,7 @@ const allArticles = async function (req, res) {
         });
 
     } catch (err) {
-        return res.status(400).json({
-            sucess: false,
-            msg: err
-        })
+        return res.status(400).send(err);
     }
 
 

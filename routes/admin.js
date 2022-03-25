@@ -33,7 +33,7 @@ router.delete('/delete', adminControllers.Delete);
 router.get('/getUsers', adminControllers.getUsers);
 
 // DELETE request to Delete User
-router.delete('/:userId', adminControllers.DeleteUser);
+router.delete('/:userId', adminControllers.deleteUser);
 
 
 

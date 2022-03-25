@@ -50,7 +50,6 @@ $(document).ready(function () {
                     let pattern = new RegExp(inputDetails[0].regex);
 
                     let validity = pattern.test(userObject[field]);
-                    console.log(field, validity);
 
                     if (validity) {
                         continue;
@@ -109,7 +108,7 @@ $(document).ready(function () {
 
             $.ajax({
                 type: "POST",
-                url: 'http://localhost:5005/auth/register',
+                url: '/auth/register',
                 contentType: "application/json",
                 dataType: "json",
                 data: JSON.stringify(thisUser),

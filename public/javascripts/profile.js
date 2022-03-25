@@ -11,10 +11,10 @@ $(document).ready(function () {
             $.ajax({
                 type: "DELETE",
                 url: "/user/delete",
-                success: function (response) {
-                    if (response.success === true) {
+                success: function (res) {
+                    if (res.success === true) {
                         $('#alert').css('color', '#ff142a');
-                        $('#alert').text(response.msg);
+                        $('#alert').text(res.msg);
                         $('#alert').fadeIn();
                         setTimeout(() => {
                             return location.href = '/'
@@ -26,15 +26,14 @@ $(document).ready(function () {
                 }
             });
         } else  {
-            console.log('OK');
             $.ajax({
                 type: "GET",
                 url: "/auth/logout",
-                success: function (response) {
-                    console.log(response);
-                    if (response.success === true) {
+                success: function (res) {
+                    console.log(res);
+                    if (res.success === true) {
                         $('#alert').css('color', '#57b0ff');
-                        $('#alert').text(response.msg);
+                        $('#alert').text(res.msg);
                         $('#alert').fadeIn();
                         setTimeout(() => {
                             return location.href = '/'
@@ -143,7 +142,7 @@ $(document).ready(function () {
                     $('#alert').text(response.msg);
                     $('#alert').fadeIn();
                     setTimeout(() => {
-                        location.href = 'http://localhost:5005/user/profile';
+                        location.href = '/user/profile';
                     }, 2000);
                 }
             },
