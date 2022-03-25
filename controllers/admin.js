@@ -172,8 +172,34 @@ const deleteUser = async (req, res) => {
     try {
         const userId = req.params.userId;
 
-        // Delete user
-        // await User.findByIdAndDelete(userId);
+        // Delete deleted user comments
+        await Comment.deleteMany({
+            author: userId
+        });
+
+        // Delete deleted user articles comments
+        const articlesId = await Article.find({
+            author: userId
+        }, {
+            _id: 1
+        });
+
+        articlesId.forEach(async function (article) {
+            await Comment.deleteMany({
+                article: article._id
+            })
+        })
+
+        // Delete deleted user articles
+        await Article.deleteMany({
+            author: userId
+        });
+
+        // Delete articles in file system
+        await rm(join(__dirname, `../public/articles/${userId}`), {
+            recursive: true,
+            force: true
+        });
 
         // Find username of user for delete avatar
         const targetUser = await User.findOne({
@@ -185,31 +211,9 @@ const deleteUser = async (req, res) => {
         // Delete user avatar in file system
         await unlink(join(__dirname, `../public/images/avatars/${targetUser.username}_avatar.jpg`));
 
-        // Delete deleted user articles
-        await Article.deleteMany({
-            author: userId
-        });
+        // Delete user
+        await User.findByIdAndDelete(userId);
 
-        // Delete articles in file system
-        await rm(join(__dirname, `../public/articles/${userId}`), { recursive: true, force: true });
-
-        // Delete deleted user articles comments
-        const userArticlesId = await Article.find({
-            author: userId
-        }, {
-            _id: 1
-        });
-
-        console.log(userArticlesId);
-
-        await Comment.deleteMany({
-            article: userArticlesId
-        });
-
-        // Delete deleted user comments
-        await Comment.deleteMany({
-            author: userId
-        });
 
         res.json({
             success: true,
