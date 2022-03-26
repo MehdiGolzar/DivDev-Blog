@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  $('#dashboard-btn').on('click', function () {
+  $('.dashboard-btn').on('click', function () {
     let role = $('#role').text();
     if (role === 'admin') {
       location.href = '/admin/dashboard';
@@ -67,9 +67,6 @@ $(document).ready(function () {
   $('#allArticlesBtn').on('click', function () {
     location.href = '/article/allArticles';
   });
-
-
-
 
 
 });
