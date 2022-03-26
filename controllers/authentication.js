@@ -188,11 +188,11 @@ const login_post = async (req, res) => {
 const logout = (req, res) => {
     res.clearCookie('user_sid')
     req.session.destroy();
-    return res.json({
-        success: true,
-        msg: 'You have logged out of your account'
-    })
-    // res.redirect('/');
+    // return res.json({
+    //     success: true,
+    //     msg: 'You have logged out of your account'
+    // })
+    res.redirect('/');
 }
 
 module.exports = {
