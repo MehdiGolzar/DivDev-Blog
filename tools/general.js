@@ -44,7 +44,7 @@ const articleImageStorage = multer.diskStorage({
 
         // let extension = file.originalname.split(".").pop();
         // cb(null, req.session.user.username + `_` + 'tempImage' + '.' + extension);
-        cb(null, req.session.user.username + '_tempImage.png'); 
+        return cb(null, req.session.user.username + '_tempImage.png'); 
 
 
 

@@ -30,7 +30,6 @@ const createArticle = async function (req, res) {
     try {
         const newArticle = {
             title: req.body.articleTitle,
-            // content: req.body.articleContent.replace(/(<([^>]+)>)/gi, ""),
             content: req.body.articleContent,
             summary: req.body.articleContent.slice(0, 150).replace(/(<([^>]+)>)/gi, ""),
         }

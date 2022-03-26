@@ -1,12 +1,12 @@
 $(document).ready(function () {
 
-
-    $('#articleImagePreview').click(function () {
+    // Select image for article
+    $('body').on('click', '#articleImagePreview',function () {
         $('#articleImageInput').trigger('click');
     });
 
-
-    $('#articleImageInput').on('change', function (e) {
+    //  Show selected image
+    $('body').on('change', '#articleImageInput', function (e) {
         e.preventDefault();
 
         let articleImageFile = $('#articleImageInput')[0].files[0];
@@ -16,7 +16,7 @@ $(document).ready(function () {
         $('#articleImagePreview').attr('src', imagePreviewSrc);
     });
 
-
+    // Send requset to server for Create article
     $('body').on('click', '#createArticleBtn', function () {
 
 
@@ -33,14 +33,11 @@ $(document).ready(function () {
                 data: imageFormData,
                 contentType: false,
                 processData: false,
-                success: function (response) {
-
-                    console.log(response);
-
+                success: function (res) {
+                    console.log(res);
                 },
                 error: function (err) {
                     console.log('err', err);
-
                 }
             });
         }
@@ -56,19 +53,16 @@ $(document).ready(function () {
             data: JSON.stringify(newArticle),
             contentType: "application/json",
             dataType: "json",
-            success: function (response) {
+            success: function (res) {
+                console.log(res);
 
-                console.log(response);
-
-                if (response.success === true) {
+                if (res.success === true) {
                     let userRole = $('#role').text();
                     if (userRole === 'blogger') {
                         return location.href = `/user/dashboard`;
-
                     }
                     return location.href = `/admin/dashboard`;
                 }
-
             },
             error: function (err) {
                 console.log('err', err);

@@ -1,19 +1,19 @@
 $(document).ready(function () {
 
-    $('#dashboard-btn').on('click', function () {
-        let role = $('#role').text();
-        if (role === 'admin') {
-            location.href = '/admin/dashboard';
-        } else {
-            location.href = '/user/dashboard';
-        }
-    });
+  $('#dashboard-btn').on('click', function () {
+    let role = $('#role').text();
+    if (role === 'admin') {
+      location.href = '/admin/dashboard';
+    } else {
+      location.href = '/user/dashboard';
+    }
+  });
 
+  // Create articles button
+  $('.create-article-btn').click(function (e) {
+    e.preventDefault();
 
-    $('.create-article-btn').click(function (e) {
-        e.preventDefault();
-
-        let createArticleModal = `  <div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    let createArticleModal = `  <div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
         aria-labelledby="createArticleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-lg modal-dialog-centered">
           <div class="modal-content">
@@ -25,7 +25,7 @@ $(document).ready(function () {
             <div class="modal-body">
     
               <!-- image -->
-              <div id="imageContainer text-center">
+              <div class="imageContainer text-center">
                 <img src="/articles/article_default_image.png" id="articleImagePreview">
                 <input type="file" class="d-none" id="articleImageInput">
               </div>
@@ -51,11 +51,22 @@ $(document).ready(function () {
         </div>
       </div>`
 
+    $('body').append(createArticleModal);
 
-        $('body').append(createArticleModal);
+    $('#createArticleModal').modal('show');
+  });
 
-        $('#createArticleModal').modal('show');
-    });
+
+  // My articles button
+  $('.my-articles-btn').click(function (e) {
+    location.href = '/article/myArticles';
+  });
+
+
+  // All articles button
+  $('#allArticlesBtn').on('click', function () {
+    location.href = '/article/allArticles';
+  });
 
 
 
