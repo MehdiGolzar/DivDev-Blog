@@ -5,15 +5,6 @@ $(document).ready(function () {
         location.href = `${window.location.origin}/${href[1]}/profile`;
     });
 
-    $('#dashboard-btn').on('click', function () {
-        let role = $('#role').text();
-        if (role === 'admin') {
-            location.href = '/admin/dashboard';
-        } else {
-            location.href = '/user/dashboard';
-        }
-    });
-
     $('nav').on('click', '.logout-btn', function (e) {
         e.preventDefault();
         $.ajax({

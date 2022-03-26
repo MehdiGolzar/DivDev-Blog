@@ -17,8 +17,7 @@ $(document).ready(function () {
     });
 
 
-    $('#createArticleBtn').click(function () {
-
+    $('body').on('click', '#createArticleBtn', function () {
 
 
         let articleImageFile = $('#articleImageInput')[0].files[0];
