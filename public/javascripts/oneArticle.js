@@ -1,5 +1,23 @@
 $(document).ready(function () {
 
+    let articleId = $('#editArticleBtn').attr('articleId');
+
+// Check user access for edit article
+    let editArticleAccess = $('#editArticleBtn').attr('editArticleAccess');
+
+    if (editArticleAccess === 'true') {
+        $('#editArticleBtn').removeClass('d-none')
+    }
+
+// Check user access for delete comment
+    let deleteCommentButtons = $('.comment-trash-btn');
+
+    for (const btn of deleteCommentButtons) {
+        const deleteCommentAccess = $(btn).attr('deletecommentaccess')
+        if (deleteCommentAccess === 'true') {
+            $(btn).removeClass('d-none')
+        }
+    }
 
     let articleImageSrc = $('#articleImage').attr('src');
     let articleTitle = $('#articleTitle').text();
@@ -10,7 +28,6 @@ $(document).ready(function () {
     let editArticleTitle = $('#editArticleTitle');
     let editArticleContent = $('#editArticleContent');
 
-    let articleId = $('#editArticleBtn').attr('articleId');
 
     $('#editArticleBtn').click(function (e) {
         e.preventDefault();
@@ -126,9 +143,9 @@ $(document).ready(function () {
                 data: JSON.stringify(newComment),
                 contentType: "application/json",
                 dataType: "json",
-                success: function (response) {
-                    console.log(response);
-                    if (response.success === true) {
+                success: function (res) {
+                    console.log(res);
+                    if (res.success === true) {
                         location.href = `/article/${articleId}`
                     }
                 },
