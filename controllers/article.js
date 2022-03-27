@@ -19,8 +19,11 @@ const Article = require('../models/article');
 const Comment = require('../models/comment');
 
 
-// require Genetal Tools
+// require Tools
 const generalTools = require('../tools/general')
+const authorizeTools = require('../tools/authorization');
+
+
 
 
 
@@ -141,6 +144,7 @@ let updateArticle = async function (req, res) {
 const myArticles = async function (req, res) {
 
     try {
+
         let myArticles = await Article.find({
             author: mongoose.Types.ObjectId(req.session.user._id)
         }).populate('author', {
@@ -157,11 +161,11 @@ const myArticles = async function (req, res) {
             });
         }
 
-        let sendToUser = [];
+        let dataSentToUser = [];
 
         myArticles.forEach(async (article) => {
             const createdAt = article.createdAt.toString().slice(0, 16);
-            sendToUser.push({
+            dataSentToUser.push({
                 id: article.id,
                 title: article.title,
                 src: article.src,
@@ -180,7 +184,7 @@ const myArticles = async function (req, res) {
         // return res.json({
         //     success: true,
         //     msg: `You have ${allArticle.length} Article`,
-        //     data: sendToUser
+        //     data: dataSentToUser
         // })
 
         return res.render('articlesList', {
@@ -189,7 +193,7 @@ const myArticles = async function (req, res) {
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
-            articles: sendToUser
+            articles: dataSentToUser
         });
 
     } catch (err) {
@@ -218,11 +222,11 @@ const allArticles = async function (req, res) {
             });
         }
 
-        let sendToUser = [];
+        let dataSentToUser = [];
 
         allArticle.forEach((article) => {
             let createdAt = article.createdAt.toString().slice(0, 16);
-            sendToUser.push({
+            dataSentToUser.push({
                 id: article.id,
                 title: article.title,
                 src: article.src,
@@ -241,7 +245,7 @@ const allArticles = async function (req, res) {
         // return res.json({
         //     success: true,
         //     msg: `There are ${allArticle.length} Article`,
-        //     data: sendToUser
+        //     data: dataSentToUser
         // })
 
         return res.render('articlesList', {
@@ -250,7 +254,7 @@ const allArticles = async function (req, res) {
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
-            articles: sendToUser
+            articles: dataSentToUser
         });
 
     } catch (err) {
@@ -283,10 +287,11 @@ const specificArticle = async function (req, res) {
             });
         }
 
-        const articleContent = await readFile(join(__dirname, '../public', targetArticle.src), 'utf-8')
-        const createdAt = targetArticle.createdAt.toString().slice(0, 16);
 
-        const articleComments = await Comment.find({
+        const targetArticleContent = await readFile(join(__dirname, '../public', targetArticle.src), 'utf-8')
+        const targetArticleCreatedAt = targetArticle.createdAt.toString().slice(0, 16);
+
+        const targetArticleComments = await Comment.find({
             article: targetArticle.id
         }, {
             content: 1,
@@ -295,39 +300,44 @@ const specificArticle = async function (req, res) {
             firstName: 1,
             lastName: 1,
             avatar: 1
-        }).lean();
+        });
+
+        let editArticleAccess = await authorizeTools.editArticleAccessController(req.session.user._id, targetArticle.author.id);
+        let deleteCommentAccess = await authorizeTools.deleteCommentAccessController(req.session.user.role);
 
 
-        const sendToUser = {
+
+        const dataSentToUser = {
             id: targetArticle.id,
             title: targetArticle.title,
-            content: articleContent,
+            content: targetArticleContent,
             summary: targetArticle.summary,
             image: targetArticle.image,
-            createdAt: createdAt,
+            createdAt: targetArticleCreatedAt,
             author: {
                 authorId: targetArticle.author._id,
                 firstName: targetArticle.author.firstName,
                 lastName: targetArticle.author.lastName,
                 avatar: targetArticle.author.avatar
             },
-            comments: articleComments
+            comments: targetArticleComments
         };
 
         // return res.json({
         //     success: true,
         //     msg: `You have ${allArticle.length} Article`,
-        //     data: sendToUser
+        //     data: dataSentToUser
         // })
 
         return res.render('oneArticle', {
-            pageTitle: sendToUser.title,
+            pageTitle: dataSentToUser.title,
             firstName: req.session.user.firstName,
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
-            // editAccess: editAccess,
-            article: sendToUser
+            editArticleAccess: editArticleAccess,
+            deleteCommentAccess: deleteCommentAccess,
+            article: dataSentToUser
         });
 
     } catch (err) {

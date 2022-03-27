@@ -80,24 +80,24 @@ let getDocId = function (doc) {
 
 
 // function for Purification Request Body
-function bodyPurification(fieldsNameArray, body) {
-    let myBody = {};
+// function bodyPurification(fieldsNameArray, body) {
+//     let myBody = {};
 
-    for (const field of fieldsNameArray) {
-        // let existField = body.find(el => el.field === field)
-        if (body.field) {
-            myBody.field = body.field;
-        } else {
-            continue;
-        }
-    }
+//     for (const field of fieldsNameArray) {
+//         // let existField = body.find(el => el.field === field)
+//         if (body.field) {
+//             myBody.field = body.field;
+//         } else {
+//             continue;
+//         }
+//     }
 
-    return myBody;
-}
+//     return myBody;
+// }
 
 module.exports = {
     uploadAvatar,
     uploadArticleImage,
     getDocId,
-    bodyPurification,
+    // bodyPurification,
 }

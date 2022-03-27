@@ -6,7 +6,7 @@ const Article = require('../models/article');
 
 function accessController(roles) {
     return function (req, res, next) {
-        if (!roles.include(req.session.user.role)) {
+        if (!roles.includes(req.session.user.role)) {
             return res.status(403).send('Access denid')
         }
 
@@ -14,21 +14,27 @@ function accessController(roles) {
     }
 }
 
-// const editAccessController = async (userId, articleId) => {
-//     return function (req, res, next) {
-//         const authorId = await Article.findById(articleId);
-//         console.log(authorId);
+const editArticleAccessController = async (userId, articleAuthorId) => {
+    let editArticleAccess = false;
+        if (userId === articleAuthorId) {
+            return editArticleAccess = true;
+        }
+        return editArticleAccess;
+}
+
+
+const deleteCommentAccessController = async (userRole) => {
+    let deleteCommentAccess = false;
+
+        if ( userRole === 'admin') {
+            return deleteCommentAccess = true;
+        } 
         
-//         if (userId !== authorId) {
-//             let editAccess = false;
-//             return next();
-//         }
-//         editAccess = true;
-//         return next();
-//     }
-// }
+    return deleteCommentAccess;
+}
 
 module.exports = {
     accessController,
-    // editAccessController
+    editArticleAccessController,
+    deleteCommentAccessController
 }

@@ -12,6 +12,8 @@ const commentRouter = require('./comment');
 
 // require Tools
 const authTools = require('../tools/authentication');
+const authorizeTools = require('../tools/authorization');
+
 
 
 /*---------------------------- index page ----------------------------*/
@@ -22,10 +24,10 @@ router.get("/", (req, res) => res.render('home'));
 router.use('/auth', authRouter);
 
 /*---------------------------- Admin Middleware ----------------------------*/
-router.use('/admin', authTools.sessionChecker_login, adminRouter);
+router.use('/admin', authTools.sessionChecker_login, authorizeTools.accessController(['admin']), adminRouter);
 
 /*---------------------------- User Middleware ----------------------------*/
-router.use('/user', authTools.sessionChecker_login, userRouter);
+router.use('/user', authTools.sessionChecker_login, authorizeTools.accessController(['blogger']), userRouter);
 
 /*---------------------------- Article Middleware ----------------------------*/
 router.use('/article', authTools.sessionChecker_login, articleRouter);
