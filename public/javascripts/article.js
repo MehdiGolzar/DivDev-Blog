@@ -1,7 +1,7 @@
 $(document).ready(function () {
 
     // Select image for article
-    $('body').on('click', '.select-image-btn', function () {
+    $('body').on('click', '#selectImageBtn', function () {
         $('#articleImageInput').trigger('click');
     });
 
@@ -12,18 +12,16 @@ $(document).ready(function () {
         let articleImageFile = $('#articleImageInput')[0].files[0];
         const imagePreviewSrc = URL.createObjectURL(articleImageFile);
 
-        // $('#articleImagePreview').removeClass('d-none');
         $('#articleImagePreview').attr('src', imagePreviewSrc);
     });
 
     // Deselecte image
-    $('body').on('click', '.deselect-image-btn', function () {
+    $('body').on('click', '#deSelectImageBtn', function () {
         $('#articleImagePreview').attr('src', '/articles/article_default_image.png');
     });
 
     // Send requset to server for Create article
-    $('body').on('click', '#createArticleBtn', function () {
-
+    $('body').on('click', '#createAarticleBtn', function () {
 
         let articleImageFile = $('#articleImageInput')[0].files[0];
 
@@ -62,11 +60,12 @@ $(document).ready(function () {
                 console.log(res);
 
                 if (res.success === true) {
-                    let userRole = $('#role').text();
-                    if (userRole === 'blogger') {
-                        return location.href = `/user/dashboard`;
-                    }
-                    return location.href = `/admin/dashboard`;
+                    // let userRole = $('#role').text();
+                    // if (userRole === 'blogger') {
+                    //     return location.href = `/user/dashboard`;
+                    // }
+                    // return location.href = `/admin/dashboard`;
+                    return location.reload();
                 }
             },
             error: function (err) {

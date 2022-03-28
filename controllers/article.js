@@ -358,9 +358,13 @@ const deleteArticle = async function (req, res) {
 
         const articleId = req.params.articleId;
 
-        await Article.findByIdAndDelete(articleId);
         await unlink(join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.html');
+        
         await unlink(join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.png');
+        
+        await Comment.deleteMany({article: articleId});
+        
+        await Article.findByIdAndDelete(articleId);
 
         res.json({
             success: true,

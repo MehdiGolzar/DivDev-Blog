@@ -1,6 +1,6 @@
 $(document).ready(function () {
 
-  $('.dashboard-btn').on('click', function () {
+  $('#dashboardBtn').on('click', function () {
     let role = $('#role').text();
     if (role === 'admin') {
       location.href = '/admin/dashboard';
@@ -10,29 +10,32 @@ $(document).ready(function () {
   });
 
   // Create articles button
-  $('.create-article-btn').click(function (e) {
+  $('#newArticleBtn').click(function (e) {
     e.preventDefault();
 
     let createArticleModal = `<div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
     aria-labelledby="createArticleModalLabel" aria-hidden="true">
+    
     <div class="modal-dialog modal-lg modal-dialog-centered">
       <div class="modal-content">
 
+        <!-- Modal header -->
         <div class="modal-header text-center">
           <h3 class="modal-title" id="createArticleModalLabel">Write Your Article</h3>
         </div>
 
+        <!-- Modal body -->
         <div class="modal-body">
 
           <!-- Article image -->
-          <div class="imageContainer row justify-content-end">
+          <div class="row justify-content-end">
             <div class="col-10  w-25">
               <img src="/articles/article_default_image.png" class="img-fluid" id="articleImagePreview">
               <input type="file" class="d-none" id="articleImageInput">
             </div>
             <div class="col-2 d-flex flex-column justify-content-center">
-              <button class="btn btn-primary py-2 mb-2 select-image-btn">Select image</button>
-              <button class="btn btn-danger deselect-image-btn">Delete image</button>
+              <button class="btn btn-primary py-2 mb-2" id="selectImageBtn">Select image</button>
+              <button class="btn btn-danger" id="deSelectImageBtn">Delete image</button>
             </div>
           </div>
 

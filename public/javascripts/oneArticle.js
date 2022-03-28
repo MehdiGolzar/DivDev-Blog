@@ -19,41 +19,106 @@ $(document).ready(function () {
         }
     }
 
-    
-    let articleImageSrc = $('#articleImage').attr('src');
-    let articleTitle = $('#articleTitle').text();
-    let articleContent = $('#articleContent').text();
 
 
-    let editArticleImagePreview = $('#editArticleImagePreview');
-    let editArticleTitle = $('#editArticleTitle');
-    let editArticleContent = $('#editArticleContent');
 
-
+    // Edit articles button
     $('#editArticleBtn').click(function (e) {
         e.preventDefault();
 
-        editArticleImagePreview.attr('src', articleImageSrc);
-        editArticleTitle.val(articleTitle);
-        editArticleContent.val(articleContent);
+        let editArticleModal = `<div class="modal fade" id="editArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="editArticleModalLabel" aria-hidden="true">
+    
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
 
+        <!-- Modal header -->
+        <div class="modal-header text-center">
+          <h3 class="modal-title" id="editArticleModalLabel">Write Your Article</h3>
+        </div>
+
+        <!-- Modal body -->
+        <div class="modal-body">
+
+          <!-- Article image -->
+          <div class="row justify-content-end">
+            <div class="col-10  w-25">
+              <img src="/articles/article_default_image.png" class="img-fluid" id="editArticleImagePreview">
+              <input type="file" class="d-none" id="editArticleImageInput">
+            </div>
+            <div class="col-2 d-flex flex-column justify-content-center">
+              <button class="btn btn-primary py-2 mb-2" id="selectImageBtn">Select image</button>
+              <button class="btn btn-danger" id="deSelectImageBtn">Delete image</button>
+            </div>
+          </div>
+
+          <!-- Article title -->
+          <div class="mb-3">
+            <input type="text" class="form-control text-light" id="editArticleTitleInput" placeholder="Title">
+          </div>
+
+          <!-- Article content -->
+          <div class="mb-3">
+            <textarea class="form-control text-light articleContent" id="editArticleContentTextarea"></textarea>
+          </div>
+        </div>
+
+        <!-- Modal footer -->
+        <div class="modal-footer">
+        <div class="d-flex flex-grow justify-content-between">
+        <div>
+          <button type="button" class="btn btn-danger" id="deleteArticleBtn">Delete</button>
+        </div>
+        <div>
+          <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" id="saveArticleBtn">Save</button>
+        </div>
+      </div>
+
+        </div>
+      </div>
+    </div>
+  </div>`;
+
+        $('body').append(editArticleModal);
+
+
+        let articleImageSrc = $('#articleImage').attr('src');
+        let articleTitle = $('#articleTitle').text();
+        let articleContent = $('#articleContent').text();
+
+
+        // Put article date in edit article modal
+        $('#editArticleImagePreview').attr('src', articleImageSrc);
+        $('#editArticleTitleInput').val(articleTitle);
+        $('#editArticleContentTextarea').val(articleContent);
+
+        $('#editArticleModal').modal('show');
     });
 
-    $('#editArticleImagePreview').click(function () {
+
+    // Select image for article
+    $('body').on('click', '#selectImageBtn', function () {
         $('#editArticleImageInput').trigger('click');
     });
 
-    $('#editArticleImageInput').change(function (e) {
+    // Show selected image
+    $('body').on('change', '#editArticleImageInput', function (e) {
         e.preventDefault();
-        let articleImageFile = $('#editArticleImageInput')[0].files[0];
-        const imagePreviewSrc = URL.createObjectURL(articleImageFile);
 
-        $('#editArticleImagePreview').removeClass('d-none');
+        let editArticleImageFile = $('#editArticleImageInput')[0].files[0];
+        const imagePreviewSrc = URL.createObjectURL(editArticleImageFile);
+
         $('#editArticleImagePreview').attr('src', imagePreviewSrc);
-
     });
 
-    $('#saveArticleBtn').click(function (e) {
+    // Deselecte image
+    $('body').on('click', '#deSelectImageBtn', function () {
+        $('#editArticleImagePreview').attr('src', '/articles/article_default_image.png');
+    });
+
+    // Save article changes
+    $('body').on('click', '#saveArticleBtn', function (e) {
         e.preventDefault();
 
         let imageFormData = new FormData();
@@ -66,10 +131,8 @@ $(document).ready(function () {
             data: imageFormData,
             contentType: false,
             processData: false,
-            success: function (response) {
-
-                console.log(response);
-
+            success: function (res) {
+                console.log(res);
             },
             error: function (err) {
                 console.log('err', err);
@@ -79,36 +142,33 @@ $(document).ready(function () {
 
 
         const updatedArticle = {
-            updatedTitle: editArticleTitle.val(),
-            updatedContent: editArticleContent.val()
+            updatedTitle: $('#editArticleTitleInput').val(),
+            updatedContent: $('#editArticleContentTextarea').val()
         }
 
         $.ajax({
             url: `/article/${articleId}`,
-            type: 'put',
+            type: 'PUT',
             data: JSON.stringify(updatedArticle),
             contentType: "application/json",
             dataType: "json",
-            success: function (response) {
-
-                console.log(response);
-
-                if (response.success === true) {
-                    location.href = `/article/${articleId}`
+            success: function (res) {
+                console.log(res);
+                if (res.success === true) {
+                    location.reload();
                 }
-
             },
             error: function (err) {
                 console.log('err', err);
-
             }
         });
-
-
     });
 
-    $('#deleteArticleBtn').click(function (e) {
-        // e.preventDefault();
+
+    // Delete article
+    $('body').on('click', '#deleteArticleBtn', function (e) {
+        e.preventDefault();
+
         $.ajax({
             type: "DELETE",
             url: `/article/${articleId}`,
