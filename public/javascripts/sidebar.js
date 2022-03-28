@@ -13,43 +13,49 @@ $(document).ready(function () {
   $('.create-article-btn').click(function (e) {
     e.preventDefault();
 
-    let createArticleModal = `  <div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
-        aria-labelledby="createArticleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-          <div class="modal-content">
-    
-            <div class="modal-header text-center">
-              <h3 class="modal-title" id="createArticleModalLabel">Write Your Article</h3>
+    let createArticleModal = `<div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+    aria-labelledby="createArticleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-content">
+
+        <div class="modal-header text-center">
+          <h3 class="modal-title" id="createArticleModalLabel">Write Your Article</h3>
+        </div>
+
+        <div class="modal-body">
+
+          <!-- Article image -->
+          <div class="imageContainer row justify-content-end">
+            <div class="col-10  w-25">
+              <img src="/articles/article_default_image.png" class="img-fluid" id="articleImagePreview">
+              <input type="file" class="d-none" id="articleImageInput">
             </div>
-    
-            <div class="modal-body">
-    
-              <!-- image -->
-              <div class="imageContainer text-center">
-                <img src="/articles/article_default_image.png" id="articleImagePreview">
-                <input type="file" class="d-none" id="articleImageInput">
-              </div>
-    
-              <!-- title -->
-              <div class="mb-3">
-                <input type="text" class="form-control text-light" id="articleTitleInput" placeholder="Title">
-              </div>
-    
-              <!-- content -->
-              <div class="mb-3">
-                <textarea class="form-control text-light articleContent" id="articleContentTextarea"></textarea>
-              </div>
-            </div>
-    
-            <div class="modal-footer">
-              <div class="d-flex flex-grow justify-content-between">
-                <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary" id="createArticleBtn">Create</button>
-              </div>
+            <div class="col-2 d-flex flex-column justify-content-center">
+              <button class="btn btn-primary py-2 mb-2 select-image-btn">Select image</button>
+              <button class="btn btn-danger deselect-image-btn">Delete image</button>
             </div>
           </div>
+
+          <!-- Article title -->
+          <div class="mb-3">
+            <input type="text" class="form-control text-light" id="articleTitleInput" placeholder="Title">
+          </div>
+
+          <!-- Article content -->
+          <div class="mb-3">
+            <textarea class="form-control text-light articleContent" id="articleContentTextarea"></textarea>
+          </div>
         </div>
-      </div>`
+
+        <div class="modal-footer">
+          <div class="d-flex flex-grow justify-content-between">
+            <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="createArticleBtn">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>`;
 
     $('body').append(createArticleModal);
 

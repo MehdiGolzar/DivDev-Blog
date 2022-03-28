@@ -2,14 +2,14 @@ $(document).ready(function () {
 
     let articleId = $('#editArticleBtn').attr('articleId');
 
-// Check user access for edit article
+    // Check user access for edit article
     let editArticleAccess = $('#editArticleBtn').attr('editArticleAccess');
 
     if (editArticleAccess === 'true') {
         $('#editArticleBtn').removeClass('d-none')
     }
 
-// Check user access for delete comment
+    // Check user access for delete comment
     let deleteCommentButtons = $('.comment-trash-btn');
 
     for (const btn of deleteCommentButtons) {
@@ -19,6 +19,7 @@ $(document).ready(function () {
         }
     }
 
+    
     let articleImageSrc = $('#articleImage').attr('src');
     let articleTitle = $('#articleTitle').text();
     let articleContent = $('#articleContent').text();
@@ -160,7 +161,7 @@ $(document).ready(function () {
     // Delete a comment
     $('body').on('click', '.comment-trash-btn', function (e) {
         e.preventDefault();
-        
+
         const targetCommentId = $(e.currentTarget).attr('commentId')
         console.log(targetCommentId);
 

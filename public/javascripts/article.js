@@ -1,11 +1,11 @@
 $(document).ready(function () {
 
     // Select image for article
-    $('body').on('click', '#articleImagePreview',function () {
+    $('body').on('click', '.select-image-btn', function () {
         $('#articleImageInput').trigger('click');
     });
 
-    //  Show selected image
+    // Show selected image
     $('body').on('change', '#articleImageInput', function (e) {
         e.preventDefault();
 
@@ -16,6 +16,11 @@ $(document).ready(function () {
         $('#articleImagePreview').attr('src', imagePreviewSrc);
     });
 
+    // Deselecte image
+    $('body').on('click', '.deselect-image-btn', function () {
+        $('#articleImagePreview').attr('src', '/articles/article_default_image.png');
+    });
+
     // Send requset to server for Create article
     $('body').on('click', '#createArticleBtn', function () {
 
@@ -23,7 +28,7 @@ $(document).ready(function () {
         let articleImageFile = $('#articleImageInput')[0].files[0];
 
         if (!!articleImageFile) {
-            
+
             let imageFormData = new FormData();
             imageFormData.append('articleImage', articleImageFile);
 

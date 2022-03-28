@@ -1,49 +1,43 @@
-<div class="modal fade" id="articleModal" tabindex="-1" role="dialog" data-bs-backdrop="static"
-    aria-labelledby="articleModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
-        <div class="modal-content">
-
-            <div class="modal-header">
-                <h3 class="modal-title text-center w-100" id="articleModalLabel">Write Your Article</h3>
+<div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"
+        aria-labelledby="createArticleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg modal-dialog-centered">
+          <div class="modal-content">
+    
+            <div class="modal-header text-center">
+              <h3 class="modal-title" id="createArticleModalLabel">Write Your Article</h3>
             </div>
-
+    
             <div class="modal-body">
-                <div id="imagePreviewContainer" class="d-flex flex-column align-item-center">
-                    <div class="text-center mb-1">
-                        <img src="/articles/article_default_Image.png" alt="Import Your Image" class="d-none"
-                            id="tempImage" width="500px" height="300px">
-                    </div>
+    
+              <!-- Article image -->
+              <div class="imageContainer row">
+                <div class="col-8">
+                  <img src="/articles/article_default_image.png" class="img-fluid" id="articleImagePreview">
+                  <input type="file" class="d-none" id="articleImageInput">
                 </div>
-
-                <div>
-                    <form id="articleForm">
-
-                        <div class="text-center mt-2 mb-3">
-                            <input type="file" id="articleImageInput" name="articleImage" class="d-none" />
-                            <button id="articleImageBtn" class="btn btn-secondary p-1 mb-1">Select article
-                                image</button>
-                        </div>
-
-                        <div>
-                            <label class="form-control text-center" for="articleTitle">
-                                <h4>Title</h4>
-                            </label>
-                            <input type="text" name="articleTitle" class="form-control bg-light text-dark"
-                                id="articleTitle" placeholder="Enter your title">
-                        </div>
-
-                        <div class="p-2">
-                            <textarea name="articleContent" id="articleContent" class="mx-2">Hello, World!</textarea>
-                        </div>
-
-                    </form>
+                <div class="col-4 d-flex flex-column">
+                  <button class="btn btn-primary">Select image</button>
+                  <button class="btn btn-danger">Delete image</button>
                 </div>
-
+              </div>
+    
+              <!-- Article title -->
+              <div class="mb-3">
+                <input type="text" class="form-control text-light" id="articleTitleInput" placeholder="Title">
+              </div>
+    
+              <!-- Article content -->
+              <div class="mb-3">
+                <textarea class="form-control text-light articleContent" id="articleContentTextarea"></textarea>
+              </div>
             </div>
+    
+            <div class="modal-footer">
+              <div class="d-flex flex-grow justify-content-between">
+                <button type="button" class="btn btn-secondary" id="cancelBtn" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary" id="createArticleBtn">Create</button>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="createArticleBtn">Create</button>
-        </div>
-    </div>
-</div>
+      </div>
