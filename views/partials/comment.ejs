@@ -16,7 +16,7 @@
 
                     <div class="d-flex flex-row p-3"> <img src="/images/avatars/<%= article.comments[i].author.avatar %> "
                             width="40" height="40" class="rounded-circle mr-3">
-                        <div class="w-100">
+                        <div class="w-100 ms-3">
                             <div class="d-flex justify-content-between align-items-center">
                                 <div class="d-flex flex-row align-items-center">
                                     <span class="mr-2"><%= article.comments[i].author.firstName %> <%= article.comments[i].author.lastName %> </span>
@@ -25,8 +25,8 @@
                             </div>
                             <p class="text-justify comment-text mb-0"><%= article.comments[i].content %> </p>
                             <div class="d-flex flex-row user-feed justify-content-between">
-                                <span class="wish"><i class="fa fa-heartbeat me-2"></i>24</span>
-                                <span class="ml-3 comment-trash-btn d-none" deleteCommentAccess="<%= deleteCommentAccess %>"><i class="far fa-trash-alt"></i></span>
+                                <span class=""><i class="fa fa-heartbeat btn text-danger fs-5"></i>24</span>
+                                <a class="comment-trash-btn d-none text-decoration-none btn text-secondary fs-5" commentId="<%= article.comments[i]._id %> " deleteCommentAccess="<%= deleteCommentAccess %>"><i class="far fa-trash-alt"></i></a>
                             </div>
                         </div>
                     </div>

@@ -124,7 +124,7 @@ $(document).ready(function () {
     });
 
 
-    // Comment
+    // Create a comment
     $('#commentInput').keyup(function (event) {
 
         if (event.keyCode === 13) {
@@ -157,4 +157,21 @@ $(document).ready(function () {
         }
     });
 
+    // Delete a comment
+    $('body').on('click', '.comment-trash-btn', function (e) {
+        e.preventDefault();
+        
+        const targetCommentId = $(e.currentTarget).attr('commentId')
+        console.log(targetCommentId);
+
+        $.ajax({
+            type: "DELETE",
+            url: `/comment/${targetCommentId}`,
+            success: function (res) {
+                if (res.success === true) {
+                    location.reload();
+                }
+            }
+        });
+    });
 });

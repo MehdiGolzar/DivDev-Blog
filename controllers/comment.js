@@ -49,6 +49,23 @@ const createComment = async (req, res) => {
 }
 
 
+// Delete Comment Controller
+const deleteComment = async (req, res) => {
+
+    try {
+        
+        const targetCommentId = req.params.commentId;
+
+        await Comment.findByIdAndDelete(targetCommentId);
+    
+        res.json({success: true, msg: 'Comment deleted successfully'});
+
+    } catch (err) {
+        res.status(400).send(err)
+    }
+}
+
 module.exports = {
     createComment,
+    deleteComment
 }

@@ -291,7 +291,7 @@ const specificArticle = async function (req, res) {
         const targetArticleContent = await readFile(join(__dirname, '../public', targetArticle.src), 'utf-8')
         const targetArticleCreatedAt = targetArticle.createdAt.toString().slice(0, 16);
 
-        const targetArticleComments = await Comment.find({
+        let targetArticleComments = await Comment.find({
             article: targetArticle.id
         }, {
             content: 1,
@@ -300,13 +300,18 @@ const specificArticle = async function (req, res) {
             firstName: 1,
             lastName: 1,
             avatar: 1
-        });
+        }).lean();
+
 
         let editArticleAccess = await authorizeTools.editArticleAccessController(req.session.user._id, targetArticle.author.id);
         let deleteCommentAccess = await authorizeTools.deleteCommentAccessController(req.session.user.role);
 
+        // Convert comment id to string
+        for (let comment of targetArticleComments) {
+            comment._id = comment._id.toString()
+        }
 
-
+        // finaly article data that send to client
         const dataSentToUser = {
             id: targetArticle.id,
             title: targetArticle.title,
@@ -341,10 +346,7 @@ const specificArticle = async function (req, res) {
         });
 
     } catch (err) {
-        return res.status(400).json({
-            sucess: false,
-            msg: err
-        })
+        return res.status(400).send(err)
     }
 }
 
