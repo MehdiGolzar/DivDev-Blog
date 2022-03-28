@@ -300,9 +300,9 @@ const specificArticle = async function (req, res) {
             firstName: 1,
             lastName: 1,
             avatar: 1
-        }).lean();
+        });
 
-
+      
         let editArticleAccess = await authorizeTools.editArticleAccessController(req.session.user._id, targetArticle.author.id);
         let deleteCommentAccess = await authorizeTools.deleteCommentAccessController(req.session.user.role);
 
