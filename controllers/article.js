@@ -193,7 +193,8 @@ const myArticles = async function (req, res) {
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
-            articles: dataSentToUser
+            articles: dataSentToUser,
+            deleteArticleAccess: true
         });
 
     } catch (err) {
@@ -241,6 +242,7 @@ const allArticles = async function (req, res) {
             });
         });
 
+        const deleteArticleAccess = await authorizeTools.deleteArticleAccessController(req.session.user.role)
 
         // return res.json({
         //     success: true,
@@ -254,7 +256,8 @@ const allArticles = async function (req, res) {
             lastName: req.session.user.lastName,
             avatar: req.session.user.avatar,
             role: req.session.user.role,
-            articles: dataSentToUser
+            articles: dataSentToUser,
+            deleteArticleAccess: deleteArticleAccess
         });
 
     } catch (err) {
