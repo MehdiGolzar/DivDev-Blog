@@ -106,6 +106,4 @@ $('#usersListContainer').on("click", ".delete-user-btn", function(e){
   
 });
 
-
-
 });

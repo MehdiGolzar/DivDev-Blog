@@ -1,9 +1,8 @@
 <div class="row">
     <!-- Articles -->
-
     <% for( let i = 0; i < articles.length; i++ ) { %>
 
-    <div class="post col-xl-5 bg-dark ms-4 me-4 mb-4">
+    <div class="post col-xl-5 bg-dark ms-4 me-4 mb-4 position-relative">
         <div class="article-card-image mt-3">
             <img src="/articles/<%= articles[i].image %> " alt="..." class="img-fluid">
         </div>
@@ -28,8 +27,10 @@
             </footer>
         </div>
         <div class="mb-3 p-1 text-center">
-            <button class="btn btn-primary w-50 px-5 py-2 moreBtn" id=""
-                articleId="<%= articles[i].id %>">More</button>
+            <a href="/article/<%= articles[i].id %>" class="btn btn-primary w-50 px-5 py-2 moreBtn">More</a>
+        </div>
+        <div class="position-absolute bottom-0 end-0 btn d-none adminDeleteArticleBtn" articleId="<%= articles[i].id %>" deleteArticleAccess="<%= deleteArticleAccess %>">
+            <i class="far fa-trash-alt text-danger h3"></i>
         </div>
     </div>
 

@@ -21,7 +21,7 @@ $(document).ready(function () {
     });
 
     // Send requset to server for Create article
-    $('body').on('click', '#createAarticleBtn', function () {
+    $('body').on('click', '#createArticleBtn', function () {
 
         let articleImageFile = $('#articleImageInput')[0].files[0];
 
@@ -74,22 +74,6 @@ $(document).ready(function () {
             }
         });
 
-    });
-
-
-    $('#myArticlesBtn').click(function (e) {
-        location.href = '/article/myArticles';
-    });
-
-
-    $('#allArticlesBtn').on('click', function () {
-        location.href = '/article/allArticles';
-    });
-
-
-    $('.moreBtn').on('click', function (el) {
-        let articleId = $(el.target).attr('articleId');
-        location.href = `/article/${articleId}`
     });
 
 });

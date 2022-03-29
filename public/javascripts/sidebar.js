@@ -66,16 +66,4 @@ $(document).ready(function () {
   });
 
 
-  // My articles button
-  $('.my-articles-btn').click(function (e) {
-    location.href = '/article/myArticles';
-  });
-
-
-  // All articles button
-  $('#allArticlesBtn').on('click', function () {
-    location.href = '/article/allArticles';
-  });
-
-
 });

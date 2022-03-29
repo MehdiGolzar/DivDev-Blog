@@ -33,8 +33,19 @@ const deleteCommentAccessController = async (userRole) => {
     return deleteCommentAccess;
 }
 
+const deleteArticleAccessController = async (userRole) => {
+    let deleteArticleAccess = null;
+
+        if ( userRole === 'admin') {
+            return deleteArticleAccess = true;
+        } 
+        
+    return deleteArticleAccess;
+}
+
 module.exports = {
     accessController,
     editArticleAccessController,
-    deleteCommentAccessController
+    deleteCommentAccessController,
+    deleteArticleAccessController
 }
