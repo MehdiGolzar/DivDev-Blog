@@ -1,8 +1,10 @@
 // require core moduls
 const {
+    access,
     unlink,
     rm
 } = require('fs/promises');
+
 const {
     join
 } = require('path');
@@ -152,7 +154,7 @@ const getUsers = async (req, res) => {
         role: 0
     });
 
-    if (!usersList) {
+    if (usersList.length === 0) {
         return res.json({
             success: false,
             msg: 'No users available'
@@ -166,7 +168,7 @@ const getUsers = async (req, res) => {
     });
 }
 
-
+// Delete user by Admin
 const deleteUser = async (req, res) => {
 
     try {
@@ -178,28 +180,32 @@ const deleteUser = async (req, res) => {
         });
 
         // Delete deleted user articles comments
-        const articlesId = await Article.find({
-            author: userId
-        }, {
-            _id: 1
-        });
-
-        articlesId.forEach(async function (article) {
-            await Comment.deleteMany({
-                article: article._id
-            })
-        })
-
-        // Delete deleted user articles
-        await Article.deleteMany({
+        const articles = await Article.find({
             author: userId
         });
 
-        // Delete articles in file system
-        await rm(join(__dirname, `../public/articles/${userId}`), {
-            recursive: true,
-            force: true
-        });
+        if (articles) {
+            // Delete comments of each article
+            articles.forEach(async function (article) {
+                await Comment.deleteMany({
+                    article: article._id
+                })
+            });
+
+            // Delete deleted user articles
+            await Article.deleteMany({
+                author: userId
+            });
+
+            // Delete articles in file system
+            await rm(join(__dirname, `../public/articles/${userId}`), {
+                recursive: true,
+                force: true
+            });
+        }
+
+
+
 
         // Find username of user for delete avatar
         const targetUser = await User.findOne({
@@ -208,17 +214,31 @@ const deleteUser = async (req, res) => {
             username: 1
         }).lean();
 
-        // Delete user avatar in file system
-        await unlink(join(__dirname, `../public/images/avatars/${targetUser.username}_avatar.jpg`));
 
-        // Delete user
-        await User.findByIdAndDelete(userId);
+        const userAvatarPath = join(__dirname, `../public/images/avatars/${targetUser.username}_avatar.jpg`);
+        await access(userAvatarPath)
+            .then( async () => {
+                // Delete user avatar in file system
+                await unlink(userAvatarPath);
+
+            })
+            .catch((err) => {
+                console.log('User has not avatar');
+            })
+            .finally( async () => {
+                // Delete user
+                await User.findByIdAndDelete(userId);
+
+                return res.json({
+                    success: true,
+                    msg: 'User deleted successfully'
+                })
+            });
 
 
-        res.json({
-            success: true,
-            msg: 'User deleted successfully'
-        })
+
+
+
 
     } catch (err) {
         return res.status(400).send(err)

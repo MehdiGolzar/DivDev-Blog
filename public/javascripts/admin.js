@@ -16,7 +16,7 @@ $(document).ready(function () {
                 <th> Phone Number </th>
                 <th> Gender </th>
                 <th> Articles </th>
-                <th> Registered in </th>
+                <th> Tools </th>
               </tr>
             </thead>
             <tbody id="tbody">
@@ -40,7 +40,6 @@ $(document).ready(function () {
         url: "/admin/getUsers",
         dataType: "json",
         success: function (res) {
-          console.log(res);
           if (res.success === true) {
             $('#usersListContainer').append(usersListDiv)
 
@@ -56,8 +55,10 @@ $(document).ready(function () {
                 <td> ${user.gender} </td>
                 <td> ${user.articles} </td>
                 <td>
-                <div class="btn btn-outline-primary" userId="${user._id}">Reset Pass</div>
-                <div class="btn btn-outline-danger delete-user-btn" userId="${user._id}">Delete</div>
+                <div class="" userId="${user._id}">
+                  <i class="fas fa-unlock h4 text-primary btn reset-password-btn me-1"></i>
+                  <i class="fas fa-trash h4 text-danger btn delete-user-btn ms-1"></i>
+                </div>
                 </td>
               </tr>`;
 
@@ -65,7 +66,7 @@ $(document).ready(function () {
             }
 
           } else {
-            $('#usersListContainer').append(`<p>${res.msg}</p>`)
+            $('#usersListContainer').append(`<div class="text-center h4 text-warning">${res.msg}</div>`)
           }
 
         },
@@ -80,24 +81,24 @@ $(document).ready(function () {
       $('#usersListContainer').toggleClass('d-none', '');
     }
 
-
-
-
   });
+
 
 // Delete User
 $('#usersListContainer').on("click", ".delete-user-btn", function(e){
   e.preventDefault();
   
-  let userId = $(e.target).attr('userId');
-  console.log(userId);
+  let userId = $(e.target.parentElement).attr('userId');
 
   $.ajax({
     type: "DELETE",
     url: `/admin/${userId}`,
     dataType: "json",
     success: function (res) {
-      console.log(res);
+      if (res.success === true) {
+        location.reload();
+        console.log('OK');
+      }
     },
     error: function (err) {
       console.log(err);

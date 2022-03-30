@@ -132,20 +132,8 @@ main.posts-listing .post-footer {
     height: 4rem;
 }
 
-/* .article-card {
-    height: 85vh;
-}
-
-.article-card .card-image-row {
-    height: 30%;
-    margin: 0.8rem;
-}
-
-.article-card .card-image-row .card-imagePreviewContainer {
-    width: 90%;
-}
-
-.article-card .card-image-row .card-imagePreviewContainer .card-image {
+.article-card-image img {
     width: 100%;
-    height: 100%;
-} */
+    height: 20rem;
+    max-height: 20rem;
+}
