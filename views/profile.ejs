@@ -21,7 +21,7 @@
 <body>
     <div class="container-fluid d-flex justify-content-center align-items-center">
         <!-- Form container -->
-        <div class="form-container p-4 col-12 col-sm-8 col-lg-6">
+        <div class="form-container p-4 col-12 col-sm-8 col-lg-6 position-relative">
 
             <!-- Avatar -->
             <div class="mb-3 field" id="avatar-container">
@@ -85,23 +85,13 @@
                     <button type="submit" id="editBtn" class="btn btn-warning mb-2">Edit</button>
                 </div>
 
-                <!-- <div class="buttons">
-                    <a id="logoutBtn" class="btn btn-dander mb-2 p-2" href="/auth/delete">Delete Account</a>
-                </div> -->
-
-                <!-- Forgot Password -->
-                <div class="text-center"><a href="/auth/login" class="text-decoration-none text-light">Forgot
-                        password?</a></div>
             </form>
 
-            <!-- Upload Avatar buttons -->
-            <!-- <form id="avatarForm" action="/user/uploadAvatar" enctype="multipart/form-data" method="post"> -->
-
-            <!-- <div class="mb-3 field">
-                <a class="text-light me-3 btn btn-outline-info" for="avatar" id="avatarBtn">Upload Avatar</a>
-                <input class="text-light form-control-file" type="file" name="avatar" id="avatar"/>
-            </div> -->
-            <!-- </form> -->
+            <div class="position-absolute top-0 start-0 p-2">
+               <a href="#" class="text-decoration-none text-light h4"  onclick="history.back();">
+                <i class="fas fa-arrow-left"></i>
+               </a>
+            </div>
 
         </div>
     </div>
