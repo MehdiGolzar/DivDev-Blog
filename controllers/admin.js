@@ -30,7 +30,7 @@ const dashboard = async (req, res) => {
     // res.json({msg: 'Logged in'});
 }
 /*-------------------------------------------------------------------------------*/
-/* Profile Controllers */
+/////////////////////////////// Profile Controllers ///////////////////////////////
 /*-------------------------------------------------------------------------------*/
 
 // Controller of GET request to  render dashaboard page
@@ -47,7 +47,6 @@ const profile = (req, res) => {
         msg: null
     });
 }
-
 
 // Update Profile Controller
 const update = async (req, res) => {
@@ -128,12 +127,12 @@ const Delete = async (req, res) => {
         if (!deletedUser) {
             return res.status(500).send('Internal server error')
         }
-        res.clearCookie('user_sid')
+        res.clearCookie('user_sid');
         // req.session.destroy();
         return res.json({
             success: true,
             msg: 'Your account has been successfully deleted'
-        })
+        });
         // res.redirect('/auth/register');
 
     } catch (err) {
@@ -142,7 +141,7 @@ const Delete = async (req, res) => {
 }
 
 /*-------------------------------------------------------------------------------*/
-/////////////////////////////* Admin Operations Controllers *//////////////////////
+////////////////////////// Admin Operations Controllers ///////////////////////////
 /*-------------------------------------------------------------------------------*/
 // Get list of users controller
 const getUsers = async (req, res) => {
@@ -189,7 +188,7 @@ const deleteUser = async (req, res) => {
             articles.forEach(async function (article) {
                 await Comment.deleteMany({
                     article: article._id
-                })
+                });
             });
 
             // Delete deleted user articles
@@ -217,7 +216,7 @@ const deleteUser = async (req, res) => {
 
         const userAvatarPath = join(__dirname, `../public/images/avatars/${targetUser.username}_avatar.jpg`);
         await access(userAvatarPath)
-            .then( async () => {
+            .then(async () => {
                 // Delete user avatar in file system
                 await unlink(userAvatarPath);
 
@@ -225,24 +224,45 @@ const deleteUser = async (req, res) => {
             .catch((err) => {
                 console.log('User has not avatar');
             })
-            .finally( async () => {
+            .finally(async () => {
                 // Delete user
                 await User.findByIdAndDelete(userId);
 
                 return res.json({
                     success: true,
                     msg: 'User deleted successfully'
-                })
+                });
             });
 
+    } catch (err) {
+        return res.status(400).send(err);
+    }
+}
 
+// Reset user password to phonenumber
+const resetUserPassword = async (req, res) => {
+    try {
 
+        const targetUserId = req.params.userId;
 
+        const targetUser = await User.findOne({
+            _id: targetUserId
+        });
 
+        targetUser.password = targetUser.phoneNumber;
+
+        await targetUser.save();
+            
+
+        return res.json({
+            success: true,
+            msg: 'Target user password successfully reset'
+        });
 
     } catch (err) {
-        return res.status(400).send(err)
+        return res.status(400).send(err);
     }
+
 }
 
 
@@ -254,4 +274,5 @@ module.exports = {
     Delete,
     getUsers,
     deleteUser,
+    resetUserPassword
 }

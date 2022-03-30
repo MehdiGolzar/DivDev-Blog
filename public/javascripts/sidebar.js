@@ -10,7 +10,7 @@ $(document).ready(function () {
   });
 
   // Create articles button
-  $('#newArticleBtn').click(function (e) {
+  $('.newArticleBtn').click(function (e) {
     e.preventDefault();
 
     let createArticleModal = `<div class="modal fade" id="createArticleModal" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1"

@@ -66,7 +66,7 @@ $(document).ready(function () {
             }
 
           } else {
-            $('#usersListContainer').append(`<div class="text-center h4 text-warning">${res.msg}</div>`)
+            $('#usersListContainer').append(`<div class="text-center h3 text-warning">${res.msg}</div>`)
           }
 
         },
@@ -93,6 +93,29 @@ $('#usersListContainer').on("click", ".delete-user-btn", function(e){
   $.ajax({
     type: "DELETE",
     url: `/admin/${userId}`,
+    dataType: "json",
+    success: function (res) {
+      if (res.success === true) {
+        location.reload();
+        console.log('OK');
+      }
+    },
+    error: function (err) {
+      console.log(err);
+    }
+  });
+  
+});
+
+// Reset user password
+$('#usersListContainer').on("click", ".reset-password-btn", function(e){
+  e.preventDefault();
+  
+  let userId = $(e.target.parentElement).attr('userId');
+
+  $.ajax({
+    type: "POST",
+    url: `/admin/rp/${userId}`,
     dataType: "json",
     success: function (res) {
       if (res.success === true) {

@@ -18,7 +18,7 @@ const authorizeTools = require('../tools/authorization');
 
 /*---------------------------- index page ----------------------------*/
 // GET request to render index page
-router.get("/", (req, res) => res.render('home'));
+router.get("/", (req, res) => res.render('index'));
 
 /*---------------------------- Auth Middleware ----------------------------*/
 router.use('/auth', authRouter);

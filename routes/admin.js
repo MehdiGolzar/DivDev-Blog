@@ -35,6 +35,8 @@ router.get('/getUsers', adminControllers.getUsers);
 // DELETE request to Delete User
 router.delete('/:userId', adminControllers.deleteUser);
 
+router.post('/rp/:userId', adminControllers.resetUserPassword);
+
 
 
 
