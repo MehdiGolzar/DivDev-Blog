@@ -21,7 +21,7 @@ router.get("/dashboard", userControllers.dashboard);
 router.get("/profile", userControllers.profile);
 
 // Put request to Update Profile
-router.put('/update', userControllers.update);
+router.put('/', userControllers.update);
 
 // Post request to Upload Avatar
 router.post('/uploadAvatar', generalTools.uploadAvatar.single('avatar'), userControllers.uploadAvatar);

@@ -192,7 +192,7 @@ const logout = (req, res) => {
     //     success: true,
     //     msg: 'You have logged out of your account'
     // })
-    res.redirect('/');
+    return res.redirect('/');
 }
 
 module.exports = {
