@@ -9,6 +9,7 @@ const {
     join
 } = require('path');
 
+
 // require Models
 const User = require('../models/user');
 const Article = require('../models/article');
@@ -24,7 +25,7 @@ const dashboard = async (req, res) => {
         firstName: req.session.user.firstName,
         lastName: req.session.user.lastName,
         avatar: req.session.user.avatar,
-        role: req.session.user.role
+        role: req.session.user.role,
     });
 
     // res.json({msg: 'Logged in'});
@@ -36,7 +37,7 @@ const dashboard = async (req, res) => {
 // Controller of GET request to  render dashaboard page
 const profile = (req, res) => {
 
-    res.render('profile', {
+    return res.render('profile', {
         username: req.session.user.username,
         firstName: req.session.user.firstName,
         lastName: req.session.user.lastName,
@@ -44,15 +45,17 @@ const profile = (req, res) => {
         phoneNumber: req.session.user.phoneNumber,
         gender: req.session.user.gender,
         avatar: req.session.user.avatar,
+        id: req.session.user._id,
         msg: null
     });
 }
 
 // Update Profile Controller
 const update = async (req, res) => {
-    const updatedFields = {}
-
+    
     try {
+        const updatedFields = {};
+        const targetUserId = req.body.id;
 
         if (req.body.firstName !== ' ' && req.body.firstName !== req.session.user.firstName) {
             updatedFields.firstName = req.body.firstName;
@@ -66,31 +69,21 @@ const update = async (req, res) => {
             updatedFields.gender = req.body.gender;
         }
 
-        // console.log('Updated Fields', updatedFields);
-
-        const updateResult = await User.updateOne({
-                username: req.session.user.username
-            },
-            updatedFields
-        );
-
-        // console.log('Update Result', updateResult);
-
-        if (updateResult.acknowledged === true && updateResult.matchedCount === 1 && updateResult.modifiedCount >= 1) {
-            return res.json({
-                success: true,
-                msg: 'Your profile has been successfully updated'
-            });
+ 
+        if (Object.keys(updatedFields).length > 0) {
+            await User.findByIdAndUpdate(targetUserId, updatedFields);
         }
-
-        return res.status(400).json({
-            success: false,
-            msg: 'Update failed'
-        });
-
+    
+        // return res.json({
+        //   success: true,
+        //   msg: 'Your profile has been successfully updated'
+        // });
+      
+        return res.redirect('/admin/profile');
+            
 
     } catch (err) {
-        console.log('Error', err);
+        return res.status(400).send(err);
     }
 
 };

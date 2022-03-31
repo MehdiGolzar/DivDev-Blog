@@ -32,15 +32,17 @@ const profile = (req, res) => {
         phoneNumber: req.session.user.phoneNumber,
         gender: req.session.user.gender,
         avatar: req.session.user.avatar,
+        id: req.session.user._id,
         msg: null
     });
 }
 
 /*-------------------------- Update Profile Controller --------------------------*/
 const update = async (req, res) => {
-    const updatedFields = {}
 
     try {
+        const updatedFields = {};
+        const targetUserId = req.body.id;
 
         if (req.body.firstName !== ' ' && req.body.firstName !== req.session.user.firstName) {
             updatedFields.firstName = req.body.firstName;
@@ -53,31 +55,39 @@ const update = async (req, res) => {
         } else if (req.body.gender !== ' ' && req.body.gender !== req.session.user.gender) {
             updatedFields.gender = req.body.gender;
         }
-        console.log('Updated Fields', updatedFields);
 
-        const updateResult = await User.updateOne({
-                username: req.session.user.username
-            },
-            updatedFields
-        );
+        // const updateResult = await User.updateOne({
+        //         username: req.session.user.username
+        //     },
+        //     updatedFields
+        // );
 
-        console.log('Update Result', updateResult);
 
-        if (updateResult.acknowledged === true && updateResult.matchedCount === 1 && updateResult.modifiedCount >= 1) {
-            return res.json({
-                success: true,
-                msg: 'Your profile has been successfully updated'
-            });
+        // if (updateResult.acknowledged === true && updateResult.matchedCount === 1 && updateResult.modifiedCount >= 1) {
+        //     return res.json({
+        //         success: true,
+        //         msg: 'Your profile has been successfully updated'
+        //     });
+        // }
+
+        // return res.status(400).json({
+        //     success: false,
+        //     msg: 'Update failed'
+        // });
+
+        if (Object.keys(updatedFields).length > 0) {
+            await User.findByIdAndUpdate(targetUserId, updatedFields);
         }
 
-        return res.status(400).json({
-            success: false,
-            msg: 'Update failed'
-        });
+        // return res.redirect('/user/profile');
 
+        return res.json({
+                    success: true,
+                    msg: 'Your profile has been successfully updated'
+                });
 
     } catch (err) {
-        console.log('Error', err);
+        return res.status(400).send(err);
     }
 
 };

@@ -3,156 +3,150 @@ $(document).ready(function () {
     let editBtn = $('#editBtn');
     let logoutBtn = $('#logoutBtn')
 
+    const username = $('#username').val();
+    let requsetURL = 'user';
+    if (username === 'admin') {
+        requsetURL = 'admin';
+    }
 
-    logoutBtn.click(function (e) {
+    // Request to delete user
+    $('#deleteUserBtn').click(function (e) {
         e.preventDefault();
 
-        if (logoutBtn.text() === 'Delete') {
-            $.ajax({
-                type: "DELETE",
-                url: "/user/delete",
-                success: function (res) {
-                    if (res.success === true) {
-                        $('#alert').css('color', '#ff142a');
-                        $('#alert').text(res.msg);
-                        $('#alert').fadeIn();
-                        setTimeout(() => {
-                            return location.href = '/'
-                        }, 3000)
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        } else  {
-            $.ajax({
-                type: "GET",
-                url: "/auth/logout",
-                success: function (res) {
-                    console.log(res);
-                    if (res.success === true) {
-                        $('#alert').css('color', '#57b0ff');
-                        $('#alert').text(res.msg);
-                        $('#alert').fadeIn();
-                        setTimeout(() => {
-                            return location.href = '/'
-                        }, 3000)
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                }
-            });
-        }
-    });
-
-
-    editBtn.click(function (e) {
-        e.preventDefault();
-
-        if (editBtn.text() === 'Edit') {
-            editBtn.removeClass('btn-warning');
-            editBtn.addClass('btn-success');
-            editBtn.text('Save');
-
-            logoutBtn.removeClass('btn-warning');
-            logoutBtn.addClass('btn-danger');
-            logoutBtn.text('Delete');
-
-            $('input[name != username]').removeAttr('disabled');
-            $('#gender').removeAttr('disabled');
-            $('input[name != username]').removeClass('text-light');
-
-
-
-        } else {
-
-            const thisUser = {};
-            thisUser.firstName = $('#firstName').val();
-            thisUser.lastName = $('#lastName').val();
-            thisUser.email = $('#email').val();
-            thisUser.phoneNumber = $('#phoneNumber').val();
-            thisUser.gender = $('#gender').val();
-
-            console.log(thisUser);
-
-            $.ajax({
-                type: "PUT",
-                url: "/user/update",
-                contentType: "application/json",
-                dataType: "json",
-                data: JSON.stringify(thisUser),
-                success: function (response) {
-                    console.log(response);
-                    if (response.success === true) {
-                        editBtn.text('Edit');
-                        editBtn.removeClass('btn-success');
-                        editBtn.addClass('btn-warning');
-
-                        logoutBtn.removeClass('btn-danger');
-                        logoutBtn.addClass('btn-secondary');
-                        logoutBtn.text('Logout');
-
-                        $('input[name != username]').attr("disabled", "disabled");
-                        $('input[name != username]').addClass('text-light');
-
-                        $('#alert').css('color', '#00ff87');
-                        $('#alert').text(response.msg);
-                        $('#alert').fadeIn();
-                        $('#alert').fadeOut(4000);
-
-                    }
-                },
-                error: function (err) {
-                    console.log(err);
-                    if (err.success === false) {
-                        $('#alert').css('color', '#00ff87');
-                        $('#alert').text(response.msg);
-                        $('#alert').fadeIn();
-                        $('#alert').fadeOut(4000);
-                        $('#alert').text('');
-                    }
-                }
-            });
-
-        }
-
-    });
-
-    $('#avatarImg').click(function () {
-        $('Input[type = file]').trigger('click');
-    });
-
-    $('#avatarInput').on('change', function () {
-
-        let formData = new FormData();
-        let avatarFile = $('#avatarInput')[0].files[0];
-        formData.append('avatar', avatarFile);
-        
         $.ajax({
-            url: '/user/uploadAvatar',
-            type: 'post',
-            data: formData,
-            contentType: false,
-            processData: false,
-            success: function (response) {
-                if (response.success === true) {
-                    $('#alert').css('color', '#00ff87');
-                    $('#alert').text(response.msg);
+            type: "DELETE",
+            url: "/user/delete",
+            success: function (res) {
+                if (res.success === true) {
+                    $('#alert').css('color', '#ff142a');
+                    $('#alert').text(res.msg);
                     $('#alert').fadeIn();
                     setTimeout(() => {
-                        location.href = '/user/profile';
-                    }, 2000);
+                        return location.href = '/'
+                    }, 3000)
                 }
             },
             error: function (err) {
-                console.log('err', err);
-                $('#alert').css('color', '#ff142a');
-                $('#alert').text('Avatar could not be uploaded');
-                $('#alert').fadeIn();
-                $('#alert').fadeOut(4000);
-            },
+                console.log(err);
+            }
         });
+
+    });
+
+
+    $('#editUserBtn').click(function (e) {
+        e.preventDefault();
+
+        $('#logoutBtn').addClass('d-none');
+        $('#editUserBtn').addClass('d-none');
+        $('#updateUserBtn').removeClass('d-none');
+        $('#cancelBtn').removeClass('d-none');
+        if (username !== 'admin') {
+            $('#deleteUserBtn').removeClass('d-none');
+        }
+
+        $('input[name != username]').removeAttr('disabled');
+        $('#gender').removeAttr('disabled');
+        $('input[name != username]').removeClass('text-light');
+
+        $('#selectAvatarBtn').removeClass('d-none');
+        $('#deleteAvatarBtn').removeClass('d-none');
+    });
+
+
+    $('#updateUserBtn').click(function (e) {
+        e.preventDefault();
+
+        // Ajax to upload avatar
+        let avatarFile = $('#avatarInput')[0].files[0];
+
+        // Check to if avatar file exists then send request
+        if (!!avatarFile) {
+
+            let avatarformData = new FormData();
+            avatarformData.append('avatar', avatarFile);
+
+            $.ajax({
+                url: `/${requsetURL}/uploadAvatar`,
+                type: 'post',
+                data: avatarformData,
+                contentType: false,
+                processData: false,
+                success: function (res) {
+                    console.log(res);
+                },
+                error: function (err) {
+                    console.log('err', err);
+                },
+            });
+        }
+
+
+        const thisUser = {};
+        thisUser.id = $('#username').attr('userId');
+        thisUser.firstName = $('#firstName').val();
+        thisUser.lastName = $('#lastName').val();
+        thisUser.email = $('#email').val();
+        thisUser.phoneNumber = $('#phoneNumber').val();
+        thisUser.gender = $('#gender').val();
+
+        // Request to update user
+        $.ajax({
+            type: "PUT",
+            url: `/${requsetURL}`,
+            contentType: "application/json",
+            dataType: "json",
+            data: JSON.stringify(thisUser),
+            success: function (res) {
+                if (res.success === true) {
+                    $('#logoutBtn').removeClass('d-none');
+                    $('#editUserBtn').removeClass('d-none');
+                    $('#updateUserBtn').addClass('d-none');
+                    $('#cancelBtn').addClass('d-none');
+                    $('#deleteUserBtn').addClass('d-none');
+                    $('#selectAvatarBtn').addClass('d-none');
+                    $('#deleteAvatarBtn').addClass('d-none');
+
+                    $('input[name != username]').attr("disabled", "disabled");
+                    $('input[name != username]').addClass('text-light');
+
+                }
+            },
+            error: function (err) {
+                console.log(err);
+            }
+        });
+
+    });
+    
+
+    // Select avatar button
+    $('#selectAvatarBtn').click(function () {
+        $('#avatarInput').trigger('click');
+    });
+
+    // Deselect avatar button
+    // $('#deleteAvatarBtn').click(function () {
+
+    //     let avatarFile = '/avatars/default_avatar.png';
+    //     const avatarPreviewSrc = URL.createObjectURL(avatarFile);
+
+    //     $('#avatarPreview').attr('src', avatarPreviewSrc);
+
+    // });
+
+    // Show seleced avatar
+    $('#avatarInput').on('change', function () {
+
+        let avatarFile = $('#avatarInput')[0].files[0];
+        const avatarPreviewSrc = URL.createObjectURL(avatarFile);
+
+        $('#avatarPreview').attr('src', avatarPreviewSrc);
+    });
+
+
+    $('#cancelBtn').click(function (e) { 
+        e.preventDefault();
+        
     });
 });
