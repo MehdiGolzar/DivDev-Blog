@@ -5,7 +5,8 @@ const {
     access,
     readFile,
     rename,
-    unlink
+    unlink,
+    rmdir
 } = require('fs/promises');
 const {
     join
@@ -361,7 +362,6 @@ const deleteArticle = async function (req, res) {
         const articleAuthor = await Article.findById(articleId, {author: 1}).lean();
 
         const articleAuthorId = articleAuthor.author._id.toString();
-        console.log(articleAuthorId);
 
         const userArticlePath = join(__dirname, `../public/articles/${articleAuthorId}/${articleId}.html`);
         await access(userArticlePath)
@@ -388,15 +388,15 @@ const deleteArticle = async function (req, res) {
 
         
             const articleDirPath = join(__dirname, `../public/articles/${articleAuthorId}`);
-            await access(articleDirPath)
-                .then(async () => {
-                    // Delete user articles folder in file system
-                    await unlink(articleDirPath);
+            await rmdir(articleDirPath);
+                // .then(async () => {
+                //     // Delete user articles folder in file system
+                //     await unlink(articleDirPath);
     
-                })
-                .catch((err) => {
-                    console.log('Article folder not exist');
-                })    
+                // })
+                // .catch((err) => {
+                //     console.log('Article folder not exist');
+                // })    
 
 
         await Comment.deleteMany({
