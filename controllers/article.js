@@ -24,9 +24,6 @@ const generalTools = require('../tools/general')
 const authorizeTools = require('../tools/authorization');
 
 
-
-
-
 // Create Article Controller
 const createArticle = async function (req, res) {
 
@@ -305,7 +302,7 @@ const specificArticle = async function (req, res) {
             avatar: 1
         });
 
-      
+
         let editArticleAccess = await authorizeTools.editArticleAccessController(req.session.user._id, targetArticle.author.id);
         let deleteCommentAccess = await authorizeTools.deleteCommentAccessController(req.session.user.role);
 
@@ -361,12 +358,51 @@ const deleteArticle = async function (req, res) {
 
         const articleId = req.params.articleId;
 
-        await unlink(join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.html');
+        const articleAuthor = await Article.findById(articleId, {author: 1}).lean();
+
+        const articleAuthorId = articleAuthor.author._id.toString();
+        console.log(articleAuthorId);
+
+        const userArticlePath = join(__dirname, `../public/articles/${articleAuthorId}/${articleId}.html`);
+        await access(userArticlePath)
+            .then(async () => {
+                // Delete user article in file system
+                await unlink(userArticlePath);
+
+            })
+            .catch((err) => {
+                console.log('Article file not exist');
+            })
+
+
+        const articleImagePath = join(__dirname, `../public/articles/${articleAuthorId}/${articleId}.png`);
+        await access(articleImagePath)
+            .then(async () => {
+                // Delete article image in file system
+                await unlink(articleImagePath);
+
+            })
+            .catch((err) => {
+                console.log('Article image file not exist');
+            })
+
         
-        await unlink(join(__dirname, `../public/articles/${req.session.user._id}/${articleId}`) + '.png');
-        
-        await Comment.deleteMany({article: articleId});
-        
+            const articleDirPath = join(__dirname, `../public/articles/${articleAuthorId}`);
+            await access(articleDirPath)
+                .then(async () => {
+                    // Delete user articles folder in file system
+                    await unlink(articleDirPath);
+    
+                })
+                .catch((err) => {
+                    console.log('Article folder not exist');
+                })    
+
+
+        await Comment.deleteMany({
+            article: articleId
+        });
+
         await Article.findByIdAndDelete(articleId);
 
         res.json({
@@ -375,7 +411,7 @@ const deleteArticle = async function (req, res) {
         });
 
     } catch (err) {
-        console.log(err);
+        res.status(400).send(err);
     }
 }
 

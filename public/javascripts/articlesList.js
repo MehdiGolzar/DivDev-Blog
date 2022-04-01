@@ -13,9 +13,9 @@ $(document).ready(function () {
         $.ajax({
             type: "DELETE",
             url: `/article/${articleId}`,
-            success: function (response) {
-                console.log(response);
-                if (response.success === true) {
+            success: function (res) {
+                console.log(res);
+                if (res.success === true) {
                     return location.reload();
                 }
             },

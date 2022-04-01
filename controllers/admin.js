@@ -52,7 +52,7 @@ const profile = (req, res) => {
 
 // Update Profile Controller
 const update = async (req, res) => {
-    
+
     try {
         const updatedFields = {};
         const targetUserId = req.body.id;
@@ -69,18 +69,18 @@ const update = async (req, res) => {
             updatedFields.gender = req.body.gender;
         }
 
- 
+
         if (Object.keys(updatedFields).length > 0) {
             await User.findByIdAndUpdate(targetUserId, updatedFields);
         }
-    
+
         // return res.json({
         //   success: true,
         //   msg: 'Your profile has been successfully updated'
         // });
-      
+
         return res.redirect('/admin/profile');
-            
+
 
     } catch (err) {
         return res.status(400).send(err);
@@ -245,7 +245,7 @@ const resetUserPassword = async (req, res) => {
         targetUser.password = targetUser.phoneNumber;
 
         await targetUser.save();
-            
+
 
         return res.json({
             success: true,
