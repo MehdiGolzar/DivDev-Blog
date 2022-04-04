@@ -30,7 +30,7 @@ const createComment = async (req, res) => {
         // }
 
 
-        const saveComment = await new Comment({
+        const saveComment = new Comment({
             content: newComment.content,
             article: newComment.articleId,
             author: req.session.user._id
