@@ -359,7 +359,9 @@ const deleteArticle = async function (req, res) {
 
         const articleId = req.params.articleId;
 
-        const articleAuthor = await Article.findById(articleId, {author: 1}).lean();
+        const articleAuthor = await Article.findById(mongoose.Types.ObjectId(articleId), {
+            author: 1
+        }).lean();
 
         const articleAuthorId = articleAuthor.author._id.toString();
 
@@ -386,18 +388,9 @@ const deleteArticle = async function (req, res) {
                 console.log('Article image file not exist');
             })
 
-        
-            const articleDirPath = join(__dirname, `../public/articles/${articleAuthorId}`);
-            await rmdir(articleDirPath);
-                // .then(async () => {
-                //     // Delete user articles folder in file system
-                //     await unlink(articleDirPath);
-    
-                // })
-                // .catch((err) => {
-                //     console.log('Article folder not exist');
-                // })    
 
+        const articleDirPath = join(__dirname, `../public/articles/${articleAuthorId}`);
+        await rmdir(articleDirPath);
 
         await Comment.deleteMany({
             article: articleId

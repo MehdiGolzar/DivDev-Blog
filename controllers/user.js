@@ -1,5 +1,16 @@
+const {
+    rm,
+    access,
+    unlink
+} = require('fs/promises');
+const {
+    join
+} = require('path')
 // require Model
 const User = require('../models/user');
+const Article = require('../models/article');
+const Comment = require('../models/comment');
+
 
 
 /*-------------------------------------------------------------------------------*/
@@ -56,35 +67,24 @@ const update = async (req, res) => {
             updatedFields.gender = req.body.gender;
         }
 
-        // const updateResult = await User.updateOne({
-        //         username: req.session.user.username
-        //     },
-        //     updatedFields
-        // );
-
-
-        // if (updateResult.acknowledged === true && updateResult.matchedCount === 1 && updateResult.modifiedCount >= 1) {
-        //     return res.json({
-        //         success: true,
-        //         msg: 'Your profile has been successfully updated'
-        //     });
-        // }
-
-        // return res.status(400).json({
-        //     success: false,
-        //     msg: 'Update failed'
-        // });
 
         if (Object.keys(updatedFields).length > 0) {
             await User.findByIdAndUpdate(targetUserId, updatedFields);
+
+            req.session.user.firstName = req.body.firstName
+            req.session.user.lastName = req.body.lastName
+            req.session.user.email = req.body.email
+            req.session.user.phoneNumber = req.body.phoneNumber
+            req.session.user.gender = req.body.gender
+
         }
 
         // return res.redirect('/user/profile');
 
         return res.json({
-                    success: true,
-                    msg: 'Your profile has been successfully updated'
-                });
+            success: true,
+            msg: 'Your profile has been successfully updated'
+        });
 
     } catch (err) {
         return res.status(400).send(err);
@@ -93,17 +93,11 @@ const update = async (req, res) => {
 };
 
 /*--------------------------- Upload Avatar Controller --------------------------*/
-const uploadAvatar = (req, res) => {
-    User.findByIdAndUpdate(req.session.user._id, {
-        avatar: req.file.filename
-    }, (err, user) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({
-                success: false,
-                msg: 'Avatar could not be uploaded'
-            });
-        }
+const uploadAvatar = async (req, res) => {
+    try {
+        await User.findByIdAndUpdate(req.session.user._id, {
+            avatar: req.file.filename
+        });
 
         req.session.user.avatar = req.file.filename;
 
@@ -111,29 +105,80 @@ const uploadAvatar = (req, res) => {
             success: true,
             msg: 'Avatar uploaded'
         });
+
         // res.redirect('/user/userDashboard');
-    });
+
+    } catch (err) {
+        res.status(400).send(err)
+    }
 }
 
 /*---------------------------- Delete User Controller ----------------------------*/
 const Delete = async (req, res) => {
 
     try {
-        const deletedUser = await User.findByIdAndDelete(req.session.user._id);
+        const userId = req.session.user._id;
 
-        if (!deletedUser) {
-            return res.status(500).send('Internal server error')
+        // Delete deleted user comments
+        await Comment.deleteMany({
+            author: userId
+        });
+
+        // Delete deleted user articles comments
+        const articles = await Article.find({
+            author: userId
+        });
+
+        if (articles) {
+            // Delete comments of each article
+            articles.forEach(async function (article) {
+                await Comment.deleteMany({
+                    article: article._id
+                });
+            });
+
+            // Delete deleted user articles
+            await Article.deleteMany({
+                author: userId
+            });
+
+            // Delete articles in file system
+            await rm(join(__dirname, `../public/articles/${userId}`), {
+                recursive: true,
+                force: true
+            });
         }
-        res.clearCookie('user_sid')
-        // req.session.destroy();
+
+        // Find username of user for delete avatar
+        const targetUser = await User.findOne({
+            _id: userId
+        }, {
+            username: 1
+        }).lean();
+
+
+        const userAvatarPath = join(__dirname, `../public/images/avatars/${targetUser.username}_avatar.jpg`);
+        await access(userAvatarPath)
+            .then(async () => {
+                // Delete user avatar in file system
+                await unlink(userAvatarPath);
+
+            })
+            .catch((err) => {
+                console.log('User has not avatar');
+            })
+
+
+        // Delete user
+        await User.findByIdAndDelete(userId);
+
         return res.json({
             success: true,
-            msg: 'Your account has been successfully deleted'
-        })
-        // res.redirect('/auth/register');
+            msg: 'User deleted successfully'
+        });
 
     } catch (err) {
-        console.log(err);
+        return res.status(400).send(err);
     }
 }
 

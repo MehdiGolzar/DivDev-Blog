@@ -1,5 +1,11 @@
 $(document).ready(function () {
 
+    const firstName = $('#firstName').val();
+    const lastName = $('#lastName').val();
+    const email = $('#email').val();
+    const phoneNumber = $('#phoneNumber').val();
+    const gender = $('#gender').val();
+
     let editBtn = $('#editBtn');
     let logoutBtn = $('#logoutBtn')
 
@@ -36,6 +42,10 @@ $(document).ready(function () {
 
     $('#editUserBtn').click(function (e) {
         e.preventDefault();
+
+
+
+
 
         $('#logoutBtn').addClass('d-none');
         $('#editUserBtn').addClass('d-none');
@@ -82,43 +92,49 @@ $(document).ready(function () {
         }
 
 
-        const thisUser = {};
-        thisUser.id = $('#username').attr('userId');
-        thisUser.firstName = $('#firstName').val();
-        thisUser.lastName = $('#lastName').val();
-        thisUser.email = $('#email').val();
-        thisUser.phoneNumber = $('#phoneNumber').val();
-        thisUser.gender = $('#gender').val();
+        const thisUser = {
+            id: $('#username').attr('userId'),
+            firstName: $('#firstName').val(),
+            lastName: $('#lastName').val(),
+            email: $('#email').val(),
+            phoneNumber: $('#phoneNumber').val(),
+            gender: $('#gender').val(),
+        }
 
-        // Request to update user
-        $.ajax({
-            type: "PUT",
-            url: `/${requsetURL}`,
-            contentType: "application/json",
-            dataType: "json",
-            data: JSON.stringify(thisUser),
-            success: function (res) {
-                if (res.success === true) {
-                    $('#logoutBtn').removeClass('d-none');
-                    $('#editUserBtn').removeClass('d-none');
-                    $('#updateUserBtn').addClass('d-none');
-                    $('#cancelBtn').addClass('d-none');
-                    $('#deleteUserBtn').addClass('d-none');
-                    $('#selectAvatarBtn').addClass('d-none');
-                    $('#deleteAvatarBtn').addClass('d-none');
+        if (thisUser.firstName !== firstName || thisUser.lastName !== lastName || thisUser.email !== email || thisUser.phoneNumber !== phoneNumber || thisUser.gender !== gender) {
 
-                    $('input[name != username]').attr("disabled", "disabled");
-                    $('input[name != username]').addClass('text-light');
+            // Request to update user
+            $.ajax({
+                type: "PUT",
+                url: `/${requsetURL}`,
+                contentType: "application/json",
+                dataType: "json",
+                data: JSON.stringify(thisUser),
+                success: function (res) {
+                    if (res.success === true) {
+                        $('#logoutBtn').removeClass('d-none');
+                        $('#editUserBtn').removeClass('d-none');
+                        $('#updateUserBtn').addClass('d-none');
+                        $('#cancelBtn').addClass('d-none');
+                        $('#deleteUserBtn').addClass('d-none');
+                        $('#selectAvatarBtn').addClass('d-none');
+                        $('#deleteAvatarBtn').addClass('d-none');
 
+                        $('input[name != username]').attr("disabled", "disabled");
+                        $('input[name != username]').addClass('text-light');
+
+                    }
+                },
+                error: function (err) {
+                    console.log(err);
                 }
-            },
-            error: function (err) {
-                console.log(err);
-            }
-        });
+            });
+
+
+        }
 
     });
-    
+
 
     // Select avatar button
     $('#selectAvatarBtn').click(function () {
@@ -145,8 +161,13 @@ $(document).ready(function () {
     });
 
 
-    $('#cancelBtn').click(function (e) { 
+    $('#cancelBtn').click(function (e) {
         e.preventDefault();
-        
+
+    });
+
+    $('#backToDashboardBtn').click(function (e) {
+        e.preventDefault();
+        location.href = `/${requsetURL}/dashboard`;
     });
 });

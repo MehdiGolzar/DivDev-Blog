@@ -72,14 +72,20 @@ const update = async (req, res) => {
 
         if (Object.keys(updatedFields).length > 0) {
             await User.findByIdAndUpdate(targetUserId, updatedFields);
+
+            req.session.user.firstName = req.body.firstName
+            req.session.user.lastName = req.body.lastName
+            req.session.user.email = req.body.email
+            req.session.user.phoneNumber = req.body.phoneNumber
+            req.session.user.gender = req.body.gender
         }
 
-        // return res.json({
-        //   success: true,
-        //   msg: 'Your profile has been successfully updated'
-        // });
+        return res.json({
+          success: true,
+          msg: 'Your profile has been successfully updated'
+        });
 
-        return res.redirect('/admin/profile');
+        // return res.redirect('/admin/profile');
 
 
     } catch (err) {
@@ -89,17 +95,11 @@ const update = async (req, res) => {
 };
 
 // Upload Avatar Controller 
-const uploadAvatar = (req, res) => {
-    User.findByIdAndUpdate(req.session.user._id, {
-        avatar: req.file.filename
-    }, (err, user) => {
-        if (err) {
-            console.log(err);
-            return res.status(500).json({
-                success: false,
-                msg: 'Avatar could not be uploaded'
-            });
-        }
+const uploadAvatar = async (req, res) => {
+    try {
+        await User.findByIdAndUpdate(req.session.user._id, {
+            avatar: req.file.filename
+        });
 
         req.session.user.avatar = req.file.filename;
 
@@ -107,31 +107,35 @@ const uploadAvatar = (req, res) => {
             success: true,
             msg: 'Avatar uploaded'
         });
+
         // res.redirect('/user/userDashboard');
-    });
-}
-
-// Delete User Controller 
-const Delete = async (req, res) => {
-
-    try {
-        const deletedUser = await User.findByIdAndDelete(req.session.user._id);
-
-        if (!deletedUser) {
-            return res.status(500).send('Internal server error')
-        }
-        res.clearCookie('user_sid');
-        // req.session.destroy();
-        return res.json({
-            success: true,
-            msg: 'Your account has been successfully deleted'
-        });
-        // res.redirect('/auth/register');
 
     } catch (err) {
-        console.log(err);
+        res.status(400).send(err)
     }
 }
+
+// // Delete User Controller 
+// const Delete = async (req, res) => {
+
+//     try {
+//         const deletedUser = await User.findByIdAndDelete(req.session.user._id);
+
+//         if (!deletedUser) {
+//             return res.status(500).send('Internal server error')
+//         }
+//         res.clearCookie('user_sid');
+//         // req.session.destroy();
+//         return res.json({
+//             success: true,
+//             msg: 'Your account has been successfully deleted'
+//         });
+//         // res.redirect('/auth/register');
+
+//     } catch (err) {
+//         console.log(err);
+//     }
+// }
 
 /*-------------------------------------------------------------------------------*/
 ////////////////////////// Admin Operations Controllers ///////////////////////////
@@ -264,7 +268,7 @@ module.exports = {
     profile,
     update,
     uploadAvatar,
-    Delete,
+    // Delete,
     getUsers,
     deleteUser,
     resetUserPassword
